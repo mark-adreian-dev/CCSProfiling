@@ -1,5 +1,5 @@
-import { Separator } from "@/core/components/base/ui/separator"
-import { SidebarTrigger } from "@/core/components/base/ui/sidebar"
+import { Separator } from "@/core/presentation/components/base/ui/separator"
+import { SidebarTrigger } from "@/core/presentation/components/base/ui/sidebar"
 
 export function SiteHeader() {
   return (

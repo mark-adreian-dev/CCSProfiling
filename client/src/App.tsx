@@ -1,12 +1,12 @@
-import { AppSidebar } from "@/core/components/base/app-sidebar"
-import { ChartAreaInteractive } from "@/core/components/base/chart-area-interactive"
-import { DataTable } from "@/core/components/base/data-table"
-import { SectionCards } from "@/core/components/base/section-cards"
-import { SiteHeader } from "@/core/components/base/site-header"
+import { AppSidebar } from "@/core/presentation/components/base/app-sidebar"
+import { ChartAreaInteractive } from "@/core/presentation/components/base/chart-area-interactive"
+import { DataTable } from "@/core/presentation/components/base/data-table"
+import { SectionCards } from "@/core/presentation/components/base/section-cards"
+import { SiteHeader } from "@/core/presentation/components/base/site-header"
 import {
   SidebarInset,
   SidebarProvider,
-} from "@/core/components/base/ui/sidebar"
+} from "@/core/presentation/components/base/ui/sidebar"
 import data from "@/app/dashboard/data.json"
 
 export function App() {

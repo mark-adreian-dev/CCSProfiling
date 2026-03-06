@@ -11,24 +11,24 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/core/components/base/ui/card"
+} from "@/core/presentation/components/base/ui/card"
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/core/components/base/ui/chart"
+} from "@/core/presentation/components/base/ui/chart"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/base/ui/select"
+} from "@/core/presentation/components/base/ui/select"
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@/core/components/base/ui/toggle-group"
+} from "@/core/presentation/components/base/ui/toggle-group"
 
 export const description = "An interactive area chart"
 
@@ -211,7 +211,7 @@ export function ChartAreaInteractive() {
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
+          className="aspect-auto h-62.5 w-full"
         >
           <AreaChart data={filteredData}>
             <defs>

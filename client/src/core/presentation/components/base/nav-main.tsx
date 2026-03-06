@@ -1,11 +1,11 @@
-import { Button } from "@/core/components/base/ui/button"
+import { Button } from "@/core/presentation/components/base/ui/button"
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/core/components/base/ui/sidebar"
+} from "@/core/presentation/components/base/ui/sidebar"
 import { CirclePlusIcon, MailIcon } from "lucide-react"
 
 export function NavMain({

@@ -1,9 +1,9 @@
 import * as React from "react"
 
-import { NavDocuments } from "@/core/components/base/nav-documents"
-import { NavMain } from "@/core/components/base/nav-main"
-import { NavSecondary } from "@/core/components/base/nav-secondary"
-import { NavUser } from "@/core/components/base/nav-user"
+import { NavDocuments } from "@/core/presentation/components/base/nav-documents"
+import { NavMain } from "@/core/presentation/components/base/nav-main"
+import { NavSecondary } from "@/core/presentation/components/base/nav-secondary"
+import { NavUser } from "@/core/presentation/components/base/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -12,7 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/core/components/base/ui/sidebar"
+} from "@/core/presentation/components/base/ui/sidebar"
 import { LayoutDashboardIcon, ListIcon, ChartBarIcon, FolderIcon, UsersIcon, CameraIcon, FileTextIcon, Settings2Icon, CircleHelpIcon, SearchIcon, DatabaseIcon, FileChartColumnIcon, FileIcon, CommandIcon } from "lucide-react"
 
 const data = {
