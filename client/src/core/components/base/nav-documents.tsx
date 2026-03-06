@@ -1,14 +1,10 @@
-import {
-  FolderIcon,
-  MoreHorizontalIcon,
-  ShareIcon,
-  type LucideIcon,
-} from "lucide-react"
+"use client"
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/core/components/base/ui/dropdown-menu"
 import {
@@ -20,6 +16,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/core/components/base/ui/sidebar"
+import { MoreHorizontalIcon, FolderIcon, ShareIcon, Trash2Icon } from "lucide-react"
 
 export function NavDocuments({
   items,
@@ -27,7 +24,7 @@ export function NavDocuments({
   items: {
     name: string
     url: string
-    icon: LucideIcon
+    icon: React.ReactNode
   }[]
 }) {
   const { isMobile } = useSidebar()
@@ -40,7 +37,7 @@ export function NavDocuments({
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <a href={item.url}>
-                <item.icon />
+                {item.icon}
                 <span>{item.name}</span>
               </a>
             </SidebarMenuButton>
@@ -50,7 +47,8 @@ export function NavDocuments({
                   showOnHover
                   className="rounded-sm data-[state=open]:bg-accent"
                 >
-                  <MoreHorizontalIcon />
+                  <MoreHorizontalIcon
+                  />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
@@ -60,12 +58,20 @@ export function NavDocuments({
                 align={isMobile ? "end" : "start"}
               >
                 <DropdownMenuItem>
-                  <FolderIcon />
+                  <FolderIcon
+                  />
                   <span>Open</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <ShareIcon />
+                  <ShareIcon
+                  />
                   <span>Share</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem variant="destructive">
+                  <Trash2Icon
+                  />
+                  <span>Delete</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
