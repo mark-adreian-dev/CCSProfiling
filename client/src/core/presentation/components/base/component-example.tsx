@@ -3,7 +3,7 @@ import * as React from "react"
 import {
   Example,
   ExampleWrapper,
-} from "@/core/components/base/example"
+} from "@/core/presentation/components/base/example"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,9 +15,9 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/core/components/base/ui/alert-dialog"
-import { Badge } from "@/core/components/base/ui/badge"
-import { Button } from "@/core/components/base/ui/button"
+} from "@/core/presentation/components/base/ui/alert-dialog"
+import { Badge } from "@/core/presentation/components/base/ui/badge"
+import { Button } from "@/core/presentation/components/base/ui/button"
 import {
   Card,
   CardAction,
@@ -26,7 +26,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/base/ui/card"
+} from "@/core/presentation/components/base/ui/card"
 import {
   Combobox,
   ComboboxContent,
@@ -34,7 +34,7 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from "@/core/components/base/ui/combobox"
+} from "@/core/presentation/components/base/ui/combobox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -51,9 +51,9 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/core/components/base/ui/dropdown-menu"
-import { Field, FieldGroup, FieldLabel } from "@/core/components/base/ui/field"
-import { Input } from "@/core/components/base/ui/input"
+} from "@/core/presentation/components/base/ui/dropdown-menu"
+import { Field, FieldGroup, FieldLabel } from "@/core/presentation/components/base/ui/field"
+import { Input } from "@/core/presentation/components/base/ui/input"
 import {
   Select,
   SelectContent,
@@ -61,8 +61,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/base/ui/select"
-import { Textarea } from "@/core/components/base/ui/textarea"
+} from "@/core/presentation/components/base/ui/select"
+import { Textarea } from "@/core/presentation/components/base/ui/textarea"
 import { PlusIcon, BluetoothIcon, MoreVerticalIcon, FileIcon, FolderIcon, FolderOpenIcon, FileCodeIcon, MoreHorizontalIcon, FolderSearchIcon, SaveIcon, DownloadIcon, EyeIcon, LayoutIcon, PaletteIcon, SunIcon, MoonIcon, MonitorIcon, UserIcon, CreditCardIcon, SettingsIcon, KeyboardIcon, LanguagesIcon, BellIcon, MailIcon, ShieldIcon, HelpCircleIcon, FileTextIcon, LogOutIcon } from "lucide-react"
 
 export function ComponentExample() {

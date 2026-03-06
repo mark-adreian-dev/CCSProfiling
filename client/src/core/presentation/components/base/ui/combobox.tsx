@@ -4,13 +4,13 @@ import * as React from "react"
 import { Combobox as ComboboxPrimitive } from "@base-ui/react"
 
 import { cn } from "@/core/lib/utils"
-import { Button } from "@/core/components/base/ui/button"
+import { Button } from "@/core/presentation/components/base/ui/button"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@/core/components/base/ui/input-group"
+} from "@/core/presentation/components/base/ui/input-group"
 import { ChevronDownIcon, XIcon, CheckIcon } from "lucide-react"
 
 const Combobox = ComboboxPrimitive.Root
@@ -298,5 +298,6 @@ export {
   ComboboxChipsInput,
   ComboboxTrigger,
   ComboboxValue,
+  // eslint-disable-next-line react-refresh/only-export-components
   useComboboxAnchor,
 }

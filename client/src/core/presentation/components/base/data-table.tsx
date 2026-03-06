@@ -38,15 +38,15 @@ import { toast } from "sonner"
 import { z } from "zod"
 
 import { useIsMobile } from "@/core/hooks/use-mobile"
-import { Badge } from "@/core/components/base/ui/badge"
-import { Button } from "@/core/components/base/ui/button"
+import { Badge } from "@/core/presentation/components/base/ui/badge"
+import { Button } from "@/core/presentation/components/base/ui/button"
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/core/components/base/ui/chart"
-import { Checkbox } from "@/core/components/base/ui/checkbox"
+} from "@/core/presentation/components/base/ui/chart"
+import { Checkbox } from "@/core/presentation/components/base/ui/checkbox"
 import {
   Drawer,
   DrawerClose,
@@ -56,7 +56,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/core/components/base/ui/drawer"
+} from "@/core/presentation/components/base/ui/drawer"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -64,9 +64,9 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/core/components/base/ui/dropdown-menu"
-import { Input } from "@/core/components/base/ui/input"
-import { Label } from "@/core/components/base/ui/label"
+} from "@/core/presentation/components/base/ui/dropdown-menu"
+import { Input } from "@/core/presentation/components/base/ui/input"
+import { Label } from "@/core/presentation/components/base/ui/label"
 import {
   Select,
   SelectContent,
@@ -74,8 +74,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/base/ui/select"
-import { Separator } from "@/core/components/base/ui/separator"
+} from "@/core/presentation/components/base/ui/select"
+import { Separator } from "@/core/presentation/components/base/ui/separator"
 import {
   Table,
   TableBody,
@@ -83,13 +83,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/core/components/base/ui/table"
+} from "@/core/presentation/components/base/ui/table"
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/core/components/base/ui/tabs"
+} from "@/core/presentation/components/base/ui/tabs"
 import { GripVerticalIcon, CircleCheckIcon, LoaderIcon, EllipsisVerticalIcon, Columns3Icon, ChevronDownIcon, PlusIcon, ChevronsLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronsRightIcon, TrendingUpIcon } from "lucide-react"
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -356,6 +356,7 @@ export function DataTable({
     [data]
   )
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,

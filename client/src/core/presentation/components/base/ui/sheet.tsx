@@ -4,7 +4,7 @@ import * as React from "react"
 import { Dialog as SheetPrimitive } from "radix-ui"
 
 import { cn } from "@/core/lib/utils"
-import { Button } from "@/core/components/base/ui/button"
+import { Button } from "@/core/presentation/components/base/ui/button"
 import { XIcon } from "lucide-react"
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
