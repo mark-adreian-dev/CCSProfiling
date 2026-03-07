@@ -13,12 +13,44 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+
+            $table->string('username', 50)->unique();
+            $table->string('email', 100)->unique();
             $table->string('password');
-            $table->rememberToken();
+
+            $table->enum('role', [
+                'student',
+                'faculty',
+                'chair',
+                'dean',
+                'admin'
+            ]);
+
+            $table->foreignId('department_id')
+                ->nullable()
+                ->constrained('departments')
+                ->nullOnDelete();
+
+            $table->string('name_prefix', 20)->nullable();
+            $table->string('first_name', 50);
+            $table->string('middle_name', 50)->nullable();
+            $table->string('last_name', 50);
+            $table->string('name_suffix', 20)->nullable();
+
+            $table->date('date_of_birth')->nullable();
+
+            $table->enum('sex', [
+                'Male',
+                'Female',
+
+            ])->nullable();
+
+            $table->string('contact_number', 20)->nullable();
+            $table->text('address')->nullable();
+            $table->string('profile_picture')->nullable();
+
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
