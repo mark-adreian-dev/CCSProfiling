@@ -2,10 +2,10 @@
 
 namespace App\Presentation\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Infrastructure\Controllers\Controller;
 use App\Application\UseCases\Authentication\AuthUser;
 use App\Application\DTO\AuthDTO;
-use App\Http\Requests\Presentation\Requests\AuthValidation;
+use App\Presentation\Requests\AuthValidation;
 
 class AuthController extends Controller
 {
