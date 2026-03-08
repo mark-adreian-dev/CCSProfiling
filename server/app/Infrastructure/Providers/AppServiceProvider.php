@@ -5,6 +5,7 @@ namespace App\Infrastructure\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Domain\Repositories\UserRepositoryInterface;
 use App\Infrastructure\Repositories\UserRepository;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        JsonResource::withoutWrapping();
     }
 }

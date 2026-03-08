@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Presentation\Resources\Authentication;
+namespace App\Presentation\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SuccessAuthResource extends JsonResource
+class FailedResource extends JsonResource
 {
 
     public function toArray(Request $request): array
@@ -13,7 +13,6 @@ class SuccessAuthResource extends JsonResource
         return [
             "status" => $this['status'],
             "message" => $this['message'],
-            "data"=> $this['user']
         ];
     }
 }
