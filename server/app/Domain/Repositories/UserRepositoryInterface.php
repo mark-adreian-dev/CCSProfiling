@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Domain\Repositories;
-
-use App\Domain\Entities\User;
+use App\Domain\Entities\UserEntity;
 
 interface UserRepositoryInterface
 {
-    public function findByEmail(string $email): ?User;
+    public function findByIndentificationId(string $identification_id): ?UserEntity;
 }

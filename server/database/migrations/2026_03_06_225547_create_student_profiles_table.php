@@ -15,7 +15,7 @@ return new class extends Migration {
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            $table->string('student_no', 20)->unique()->nullable();
+            $table->string('student_no')->unique();
 
             $table->foreignId('program_id')
                 ->constrained('programs')

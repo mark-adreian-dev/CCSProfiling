@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-
-            $table->string('username', 50)->unique();
+            
             $table->string('email', 100)->unique();
             $table->string('password');
 
@@ -37,13 +36,9 @@ return new class extends Migration
             $table->string('last_name', 50);
             $table->string('name_suffix', 20)->nullable();
 
-            $table->date('date_of_birth')->nullable();
+            $table->date('date_of_birth');
 
-            $table->enum('sex', [
-                'Male',
-                'Female',
-
-            ])->nullable();
+            $table->enum('sex', ['Male','Female',]);
 
             $table->string('contact_number', 20)->nullable();
             $table->text('address')->nullable();

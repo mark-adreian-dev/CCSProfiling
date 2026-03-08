@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('faculty_profiles', function (Blueprint $table) {
             $table->id();
 
-            $table->string('employee_no', 20)->unique()->nullable();
+            $table->string('employee_no')->unique();
 
             $table->foreignId('user_id')
                 ->unique()
