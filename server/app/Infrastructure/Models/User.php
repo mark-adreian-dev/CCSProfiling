@@ -11,7 +11,6 @@ class User extends Authenticatable
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'username',
         'email',
         'password',
         'role',

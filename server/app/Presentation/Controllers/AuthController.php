@@ -2,25 +2,37 @@
 
 namespace App\Presentation\Controllers;
 
-use App\Infrastructure\Controllers\Controller;
-use App\Application\UseCases\Authentication\AuthUser;
-use App\Application\DTO\AuthDTO;
+use App\Presentation\Controllers\Controller;
+use App\Application\UseCases\Authentication\AuthUserUseCase;
+use App\Application\DTO\Authentication\AuthRequestDTO;
+use App\Application\DTO\Authentication\AuthResponseDTO;
 use App\Presentation\Requests\AuthValidation;
+use App\Presentation\Resources\Authentication\SuccessAuthResource;
 
 class AuthController extends Controller
 {
-    public function login(AuthValidation $request, AuthUser $loginUser)
+    public function login(AuthValidation $request, AuthUserUseCase $loginUser)
     {
-        $dto = new AuthDTO(
-            $request->email,
-            $request->password
-        );
+        try {
+            $dto = new AuthRequestDTO(
+                $request->identification_id,
+                $request->password
+            );
 
-        $user = $loginUser->execute($dto);
+            $user = $loginUser->execute($dto);
+            $responseData = AuthResponseDTO::responseData($user);
 
-        return response()->json([
-            'message' => 'Login successful',
-            'user' => $user
-        ]);
+            return new SuccessAuthResource([
+                "user" => $responseData,
+                "status" => 200,
+                "message" => "Login successfully, Welcome back {$responseData->first_name}"
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => $e->getCode() ?: 400,
+                "message" => $e->getMessage(),
+            ], $e->getCode() ?: 400);
+        }
     }
 }

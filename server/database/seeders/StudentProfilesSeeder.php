@@ -15,13 +15,15 @@ class StudentProfilesSeeder extends Seeder
         foreach ($students as $index => $student) {
             $studentNumber = str_pad($index + 1, 7, '0', STR_PAD_LEFT);
 
-            StudentProfile::create([
-                'user_id' => $student->id,
-                'program_id' => 1,
-                'academic_year' => 3,
-                'academic_status' => 'Regular',
-                'student_no' => $studentNumber,
-            ]);
+            StudentProfile::firstOrCreate(
+                ['user_id' => $student->id],
+                [
+                    'program_id' => 1,
+                    'academic_year' => 3,
+                    'academic_status' => 'Regular',
+                    'student_no' => $studentNumber,
+                ]
+            );
         }
     }
 }

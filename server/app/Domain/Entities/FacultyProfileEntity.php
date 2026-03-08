@@ -2,12 +2,12 @@
 
 namespace App\Domain\Entities;
 
-class User
+class FacultyProfileEntity
 {
     public function __construct(
         public int $id,
-        public string $email,
-        public string $password
+        public string $employee_no,
+        public ?string $position
     ) {
     }
 }
