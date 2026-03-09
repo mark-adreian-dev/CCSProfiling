@@ -22,7 +22,7 @@ class AuthValidation extends FormRequest
     public function rules()
     {
         return [
-            'identification_id' => ['required', 'digits:7'],
+            'identification_id' => 'required|digits:7',
             'password' => 'required|min:1'
         ];
     }

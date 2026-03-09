@@ -13,7 +13,7 @@ class SuccessResource extends JsonResource
         return [
             "status" => $this['status'],
             "message" => $this['message'],
-            "data"=> $this['user'] ?? []
+            "data"=> $this['data'] ?? []
         ];
     }
 }
