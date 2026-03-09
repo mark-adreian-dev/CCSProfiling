@@ -1,5 +1,5 @@
-import { Separator } from "@/core/presentation/components/base/ui/separator"
-import { SidebarTrigger } from "@/core/presentation/components/base/ui/sidebar"
+import { Separator } from "@/core/presentation/components/base/ui/separator";
+import { SidebarTrigger } from "@/core/presentation/components/base/ui/sidebar";
 
 export function SiteHeader() {
   return (
@@ -13,5 +13,5 @@ export function SiteHeader() {
         <h1 className="text-base font-medium">Documents</h1>
       </div>
     </header>
-  )
+  );
 }

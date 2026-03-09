@@ -6,7 +6,7 @@ use App\Domain\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
-class GetUserUseCase
+class GetAuthUserUseCase
 {
     public function __construct(
         protected UserRepositoryInterface $userRepository
