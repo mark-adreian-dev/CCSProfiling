@@ -12,8 +12,8 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@/core/presentation/components/base/base",
-    "ui": "@/core/presentation/components/base/base/ui",
+    "components": "@/core/presentation/components/base",
+    "ui": "@/core/presentation/components/base/ui",
     "utils": "@/core/presentation/lib/utils",
     "lib": "@/core/presentation/lib",
     "hooks": "@/core/presentation/hooks"
