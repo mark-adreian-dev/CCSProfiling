@@ -1,11 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthStore } from "../store/auth.store";
 import { ROUTER_CONFIG } from "../config/router.config";
+import { useAuthStore } from "../store/auth.store";
 
-const ProtectedRoutes = () => {
+export default function ProtectedRoutes() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  console.log("isLoggedIn", isLoggedIn)
-  return isLoggedIn ? <Outlet /> : <Navigate to={ROUTER_CONFIG.AUTH.URL} />;
-};
+  // No useGetUserQuery here! It's already handled by AuthGuard.
+  
+  if (!isLoggedIn) {
+    return <Navigate to={ROUTER_CONFIG.AUTH.URL} replace />;
+  }
 
-export default ProtectedRoutes;
+  return <Outlet />;
+}
