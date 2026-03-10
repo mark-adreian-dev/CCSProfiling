@@ -62,7 +62,8 @@ class AuthController extends Controller
 
             return new SuccessResource([
                 'status' => 200,
-                'message' => "Logged out successfully"
+                'message' => "Logged out successfully",
+                'data' => []
             ]);
         } catch (Exception $e) {
             return new FailedResource([

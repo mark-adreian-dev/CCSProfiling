@@ -2,8 +2,6 @@
 
 namespace App\Application\UseCases\Authentication;
 
-use App\Application\DTO\Authentication\AuthRequestDTO;
-;
 use App\Domain\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Exception;

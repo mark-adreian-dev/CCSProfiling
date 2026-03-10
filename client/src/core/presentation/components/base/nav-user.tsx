@@ -1,3 +1,4 @@
+import { useLogoutMutation } from "@/core/hooks/auth.hooks";
 import {
   Avatar,
   AvatarFallback,
@@ -35,7 +36,8 @@ export function NavUser({
     avatar: string;
   };
 }) {
-  const { isMobile } = useSidebar();
+  const { isMobile } = useSidebar();  
+  const {  mutateAsync: logout, isPending } = useLogoutMutation()
 
   return (
     <SidebarMenu>
@@ -95,7 +97,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem disabled={isPending} onClick={() => logout()}>
               <LogOutIcon />
               Log out
             </DropdownMenuItem>

@@ -2,32 +2,28 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthUseCase } from "../application/auth.use-case";
 import { AuthRepository } from "../infrastructure/repository/auth.repository";
 import type { LoginRequest } from "../domain/schema/auth.schema";
-import { toast } from "sonner";
-import type { AuthSuccessDTO } from "../infrastructure/dto/auth.dto";
 import { handleError } from "../helpers/errorHandler";
 import { TOASTER_CONFIG } from "../config/toaster.config";
+import { useAuthStore } from "../store/auth.store";
 import { useNavigate } from "react-router-dom";
 import { ROUTER_CONFIG } from "../config/router.config";
-import { useAuthStore } from "../store/auth.store";
 
 const repository = new AuthRepository();
 const useCase = new AuthUseCase(repository);
 
 export const useLoginMutation = () => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient(); // Add this
+  const navigate = useNavigate()
+  const queryClient = useQueryClient();
   const setLoginStatus = useAuthStore((state) => state.setLoginStatus);
- 
+  const setUser = useAuthStore((state) => state.setUser);
+
   return useMutation({
     mutationFn: (credentials: LoginRequest) => useCase.login(credentials),
-    onSuccess: (data: AuthSuccessDTO) => {
-      navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.URL);
+    onSuccess: (data) => {
+      queryClient.setQueryData(["auth-user"], data);
+      setUser(data.data)
       setLoginStatus(true);
-      queryClient.invalidateQueries({ queryKey: ["auth-user"] });
       navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.URL);
-      toast.success(data.message, {
-        id: TOASTER_CONFIG.AUTH,
-      });
     },
     onError: (error: unknown) => {
       handleError(error, TOASTER_CONFIG.AUTH);
@@ -36,27 +32,42 @@ export const useLoginMutation = () => {
 };
 
 export const useLogoutMutation = () => {
+  const queryClient = useQueryClient();
+  const clearUser = useAuthStore((state) => state.clearUser);
+  const clearCookies = useAuthStore((state) => state.clearCookies);
+
   return useMutation({
     mutationFn: () => useCase.logout(),
-    onError: (error: unknown) => {
+    onSuccess: () => {
+      clearUser(); // Reset Zustand
+      clearCookies(); // Reset Browser Cookies
+      queryClient.clear(); // RESET EVERYTHING in TanStack Query
+    },
+    onError: (error) => {
       handleError(error, TOASTER_CONFIG.AUTH);
+      // Even if the logout API fails, we usually want to clear the local session
+      clearUser();
+      queryClient.clear();
     },
   });
 };
 
-export const useCSRFTokenQuery = () => {
-  return useQuery({
-    queryKey: ["csrf-token"],
-    queryFn: () => useCase.fetchCSRFToken(),
-  });
-};
 
 export const useGetUserQuery = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const clearUser = useAuthStore((state) => state.clearUser);
 
   return useQuery({
     queryKey: ["auth-user"],
     queryFn: () => useCase.getUser(),
     enabled: isLoggedIn,
+    retry: false,
+    select: (response) => response.data,
+    meta: {
+      errorMessage: "Session expired. Please login again.",
+      onAuthError: () => {
+        clearUser(); 
+      },
+    },
   });
 };

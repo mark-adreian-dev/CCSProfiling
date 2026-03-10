@@ -16,7 +16,7 @@ class ExcecptionHandler
     {
         return (new FailedResource([
             'status' => 401,
-            'message' => 'Unauthorizedssssssssss',
+            'message' => 'Unauthorized',
         ]))->response()->setStatusCode(401);
     }
 
