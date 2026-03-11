@@ -2,6 +2,9 @@
 
 namespace App\Infrastructure\Repositories;
 
+use App\Domain\Enums\OrderDirection;
+use App\Domain\Enums\RoleEnum;
+use App\Domain\Enums\UserSortBy;
 use App\Domain\Repositories\UserRepositoryInterface;
 use App\Infrastructure\Models\FacultyProfile;
 use App\Infrastructure\Models\StudentProfile;
@@ -10,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Domain\Entities\UserEntity;
 use App\Domain\Entities\StudentProfileEntity;
 use App\Domain\Entities\FacultyProfileEntity;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -86,7 +90,6 @@ class UserRepository implements UserRepositoryInterface
             facultyProfile: $facultyEntity
         );
     }
-
     public function findAuthenticatedUser(): ?UserEntity {
         $user = Auth::user()->load(['studentProfile', 'facultyProfile']);
 
@@ -142,9 +145,15 @@ class UserRepository implements UserRepositoryInterface
             facultyProfile: $facultyEntity
         );
     }
-
     public function unAuthenticateUser() {
         request()->session()->invalidate();
         request()->session()->regenerateToken();
+    }
+
+    public function findAllStudentProfiles(): Builder
+    {
+        return User::query()
+            ->where('role', RoleEnum::STUDENT->value)
+            ->with('studentProfile'); 
     }
 }
