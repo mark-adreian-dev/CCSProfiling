@@ -31,23 +31,14 @@ export default function AuthLayout() {
         />
         <div className="flex flex-col items-center justify-center">
           <div className="rounded-2xl w-fit">
-            <Link
-              to="#"
-              className="flex flex-col items-center justify-center gap-4 font-medium mb-4"
-            >
+            <Link to="#" className="flex flex-col items-center justify-center gap-4 font-medium mb-4">
               <div className="flex size-30 items-center justify-center rounded-md text-primary-foreground">
-                <img
-                  src={CCSLogo}
-                  className="object-cover object-center"
-                  draggable="false"
-                />
+                <img src={CCSLogo} className="object-cover object-center" draggable="false" />
               </div>
             </Link>
             <div className="text-center mb-10">
               <p className="text-2xl font-bold">College of Computing Studies</p>
-              <p className="text-balance text-lg text-muted-foreground">
-                University of Cabuyao
-              </p>
+              <p className="text-balance text-lg text-muted-foreground">University of Cabuyao</p>
             </div>
             <div className="w-full">
               <Outlet />
@@ -59,7 +50,7 @@ export default function AuthLayout() {
         <img
           src={CCSBackground}
           alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale object-center"
+          className="absolute inset-0 h-full w-full object-cover object-center"
         />
       </div>
     </div>

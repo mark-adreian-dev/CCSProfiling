@@ -1,9 +1,6 @@
 import { Button } from "@/core/presentation/components/base/ui/button";
 import { useForm } from "react-hook-form";
-import {
-  LoginRequestSchema,
-  type LoginRequest,
-} from "@/core/domain/schema/auth.schema";
+import { LoginRequestSchema, type LoginRequest } from "@/core/domain/schema/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Form from "@/core/presentation/components/custom/Form/Form";
 import { useLoginMutation } from "@/core/hooks/auth.hooks";
@@ -55,14 +52,7 @@ export function LoginForm() {
             type={"text"}
             disabled={isLoggingIn}
           />
-          <FormTextInput
-            FieldIcon={LockIcon}
-            formInstance={form}
-            name={"password"}
-            label={"Password"}
-            type={"password"}
-            disabled={isLoggingIn}
-          />
+          <FormTextInput FieldIcon={LockIcon} formInstance={form} name={"password"} label={"Password"} type={"password"} disabled={isLoggingIn} />
 
           <Button
             type="submit"

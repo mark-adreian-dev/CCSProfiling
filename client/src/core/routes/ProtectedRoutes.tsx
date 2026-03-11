@@ -1,14 +1,24 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { ROUTER_CONFIG } from "../config/router.config";
-import { useAuthStore } from "../store/auth.store";
+import { Role } from "../enums/roles.enums";
+import { useGetUserQuery } from "../hooks/auth.hooks";
 
 export default function ProtectedRoutes() {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  // No useGetUserQuery here! It's already handled by AuthGuard.
-  
-  if (!isLoggedIn) {
-    return <Navigate to={ROUTER_CONFIG.AUTH.URL} replace />;
-  }
+  const { data: user } = useGetUserQuery();
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (user) {
+      if (user.role === Role.STUDENT) {
+        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.ROUTES.QUICK_FIND.URL);
+      } else {
+        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.ROUTES.QUICK_FIND.URL);
+      } 
+    }
+    else {
+      navigate(ROUTER_CONFIG.AUTH.URL);
+    }
+  }, [navigate, user])
 
   return <Outlet />;
 }

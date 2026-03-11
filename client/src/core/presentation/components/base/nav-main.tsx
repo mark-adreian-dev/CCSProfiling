@@ -1,12 +1,6 @@
-import { Button } from "@/core/presentation/components/base/ui/button";
-import {
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/core/presentation/components/base/ui/sidebar";
-import { CirclePlusIcon, MailIcon } from "lucide-react";
+import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/core/presentation/components/base/ui/sidebar";
+import { SearchCheck } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function NavMain({
   items,
@@ -26,27 +20,21 @@ export function NavMain({
               tooltip="Quick Create"
               className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
             >
-              <CirclePlusIcon />
-              <span>Quick Create</span>
+              <SearchCheck />
+              <span>Quick Find</span>
             </SidebarMenuButton>
-            <Button
-              size="icon"
-              className="size-8 group-data-[collapsible=icon]:opacity-0"
-              variant="outline"
-            >
-              <MailIcon />
-              <span className="sr-only">Inbox</span>
-            </Button>
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
-                {item.icon}
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            <Link key={item.title} to={item.url}>
+              <SidebarMenuItem>
+                <SidebarMenuButton tooltip={item.title} className="hover:bg-primary hover:text-primary-foreground">
+                  {item.icon}
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </Link>
           ))}
         </SidebarMenu>
       </SidebarGroupContent>

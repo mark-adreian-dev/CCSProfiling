@@ -7,5 +7,4 @@ export const RESPONSE_STATUS = {
   UNAUTHORIZED: 401,
 } as const;
 
-export type ResponseStatus =
-  (typeof RESPONSE_STATUS)[keyof typeof RESPONSE_STATUS];
+export type ResponseStatus = (typeof RESPONSE_STATUS)[keyof typeof RESPONSE_STATUS];

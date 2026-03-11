@@ -1,12 +1,7 @@
 import { Controller } from "react-hook-form";
 import type { UseFormReturn, FieldValues, Path } from "react-hook-form";
 import { useState, type InputHTMLAttributes } from "react";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/core/presentation/components/base/ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@/core/presentation/components/base/ui/field";
 import { Input } from "@/core/presentation/components/base/ui/input";
 import { Eye, EyeOff, type LucideIcon } from "lucide-react";
 
@@ -50,13 +45,7 @@ export default function FormTextInput<T extends FieldValues>({
               id={field.name}
               aria-invalid={fieldState.invalid}
               className="border-none focus-visible:ring-0 w-full pr-10"
-              type={
-                isPasswordField
-                  ? isPasswordVisible
-                    ? "text"
-                    : "password"
-                  : inputProps.type
-              }
+              type={isPasswordField ? (isPasswordVisible ? "text" : "password") : inputProps.type}
             />
 
             {isPasswordField && (

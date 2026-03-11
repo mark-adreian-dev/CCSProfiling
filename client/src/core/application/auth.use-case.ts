@@ -7,13 +7,11 @@ import type { AuthUseCaseInterface } from "./interface/auth.service.interface";
 export class AuthUseCase implements AuthUseCaseInterface {
   constructor(private repository: AuthRepositoryInterface) {}
 
-  async login(
-    credentials: LoginRequest
-  ): Promise<UserSuccessDTO> {
+  async login(credentials: LoginRequest): Promise<UserSuccessDTO> {
     await this.repository.fetchCSRFToken();
     await this.repository.login(credentials);
     const user = await this.repository.getUser();
-    return user
+    return user;
   }
 
   async logout(): Promise<AuthSuccessDTO> {
