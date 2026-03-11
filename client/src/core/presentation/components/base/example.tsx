@@ -28,17 +28,10 @@ function Example({
   return (
     <div
       data-slot="example"
-      className={cn(
-        "mx-auto flex w-full max-w-lg min-w-0 flex-col gap-1 self-stretch lg:max-w-none",
-        containerClassName
-      )}
+      className={cn("mx-auto flex w-full max-w-lg min-w-0 flex-col gap-1 self-stretch lg:max-w-none", containerClassName)}
       {...props}
     >
-      {title && (
-        <div className="px-1.5 py-2 text-xs font-medium text-muted-foreground">
-          {title}
-        </div>
-      )}
+      {title && <div className="px-1.5 py-2 text-xs font-medium text-muted-foreground">{title}</div>}
       <div
         data-slot="example-content"
         className={cn(

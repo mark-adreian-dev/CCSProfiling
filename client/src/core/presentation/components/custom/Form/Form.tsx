@@ -1,8 +1,4 @@
-import type {
-  UseFormReturn,
-  FieldValues,
-  SubmitHandler,
-} from "react-hook-form";
+import type { UseFormReturn, FieldValues, SubmitHandler } from "react-hook-form";
 
 interface FormProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -10,10 +6,6 @@ interface FormProps<T extends FieldValues> {
   children: React.ReactNode;
 }
 
-export default function Form<T extends FieldValues>({
-  form,
-  onSubmit,
-  children,
-}: FormProps<T>) {
+export default function Form<T extends FieldValues>({ form, onSubmit, children }: FormProps<T>) {
   return <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>;
 }

@@ -2,13 +2,7 @@
 
 import * as React from "react";
 
-import {
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/core/presentation/components/base/ui/sidebar";
+import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/core/presentation/components/base/ui/sidebar";
 
 export function NavSecondary({
   items,

@@ -17,10 +17,7 @@ export class AuthRepository implements AuthRepositoryInterface {
   }
 
   async login(credentials: LoginRequest): Promise<AuthSuccessDTO> {
-    const { data } = await api.post(
-      API_CONFIG.enpoints.AUTH.LOGIN,
-      credentials
-    );
+    const { data } = await api.post(API_CONFIG.enpoints.AUTH.LOGIN, credentials);
     return AuthSuccessDTOSchema.parse(data);
   }
 

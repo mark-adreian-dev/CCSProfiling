@@ -1,10 +1,9 @@
-import { cn } from '@/core/presentation/lib/utils';
-import { Spinner } from '../../base/ui/spinner';
-
+import { cn } from "@/core/presentation/lib/utils";
+import { Spinner } from "../../base/ui/spinner";
 
 interface SpinnerLoaderProps {
-  message?: string
-  className? : string
+  message?: string;
+  className?: string;
 }
 
 export default function SpinnerLoader({ message, className }: SpinnerLoaderProps) {

@@ -7,6 +7,7 @@ import { TOASTER_CONFIG } from "../config/toaster.config";
 import { useAuthStore } from "../store/auth.store";
 import { useNavigate } from "react-router-dom";
 import { ROUTER_CONFIG } from "../config/router.config";
+import { Role } from "../enums/roles.enums";
 
 const repository = new AuthRepository();
 const useCase = new AuthUseCase(repository);
@@ -23,7 +24,16 @@ export const useLoginMutation = () => {
       queryClient.setQueryData(["auth-user"], data);
       setUser(data.data)
       setLoginStatus(true);
-      navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.URL);
+
+      const role = data.data.role
+
+      if (role !== Role.STUDENT) {
+        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.URL);
+      } else {
+        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.URL
+        );
+      }
+ 
     },
     onError: (error: unknown) => {
       handleError(error, TOASTER_CONFIG.AUTH);
@@ -32,6 +42,7 @@ export const useLoginMutation = () => {
 };
 
 export const useLogoutMutation = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const clearUser = useAuthStore((state) => state.clearUser);
   const clearCookies = useAuthStore((state) => state.clearCookies);
@@ -42,12 +53,14 @@ export const useLogoutMutation = () => {
       clearUser(); // Reset Zustand
       clearCookies(); // Reset Browser Cookies
       queryClient.clear(); // RESET EVERYTHING in TanStack Query
+      navigate(ROUTER_CONFIG.AUTH.URL);
     },
     onError: (error) => {
       handleError(error, TOASTER_CONFIG.AUTH);
       // Even if the logout API fails, we usually want to clear the local session
       clearUser();
       queryClient.clear();
+      navigate(ROUTER_CONFIG.AUTH.URL)
     },
   });
 };
