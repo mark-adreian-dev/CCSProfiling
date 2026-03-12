@@ -10,37 +10,53 @@ use App\Domain\Enums\OrderEnum;
 use App\Domain\Enums\UserSortBy;
 use App\Presentation\Controllers\Controller;
 use App\Presentation\Requests\GetAllStudentValidation;
+use App\Presentation\Resources\SuccessResource;
+use Exception;
 
 class StudentProfileController extends Controller
 {
-    
+
     public function getAllStudents(GetAllStudentValidation $request, GetAllStudentProfileUseCase $getAllStudentProfile) {
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('pageSize', 10);
-        $search = $request->input('search');
+        try {
+            $page = $request->input('page', 1);
+            $pageSize = $request->input('pageSize', 10);
+            $search = $request->input('search');
 
-        $sortBy = UserSortBy::tryFrom(
-            $request->input('sortBy', 'created_at')
-        ) ?? UserSortBy::CREATED_AT;
+            $sortBy = UserSortBy::tryFrom(
+                $request->input('sortBy', 'created_at')
+            ) ?? UserSortBy::CREATED_AT;
 
-        $order = OrderEnum::tryFrom(
-            $request->input('order', 'desc')
-        ) ?? OrderEnum::DESC;
+            $order = OrderEnum::tryFrom(
+                $request->input('order', 'desc')
+            ) ?? OrderEnum::DESC;
 
-        $paginatedData = $getAllStudentProfile->execute(
-            $search,
-            $page,
-            $pageSize,
-            $sortBy,
-            $order
-        );
+            $paginatedData = $getAllStudentProfile->execute(
+                $search,
+                $page,
+                $pageSize,
+                $sortBy,
+                $order
+            );
 
-        return PaginationResponseDTO::responseData(
-            $paginatedData,
-            fn(UserEntity $user) => UserResponseDTO::responseData($user)
-        );
+            $responseData = PaginationResponseDTO::responseData(
+                $paginatedData,
+                fn(UserEntity $user) => UserResponseDTO::responseData($user)
+            );
+
+            return new SuccessResource([
+                "data" => $responseData,
+                "status" => 200,
+                "message" => "Student profiles fetched successfully"
+            ]);
+
+
+        } catch (Exception $e) {
+
+        }
+
+
     }
-    
 
-    
+
+
 }
