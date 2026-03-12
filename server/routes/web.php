@@ -1,7 +1,7 @@
 <?php
 
 use App\Presentation\Controllers\AuthController;
-use App\Presentation\Controllers\StudentProfileController;
+use App\Presentation\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api/v1')->group(function () {
@@ -12,7 +12,8 @@ Route::prefix('api/v1')->group(function () {
         Route::get('/user', [AuthController::class, 'me']);
     });
 
-    Route::middleware('auth:sanctum')->prefix('students')->group(function () {
-        Route::get('/', [StudentProfileController::class, 'getAllStudents']);
+    Route::middleware('auth:sanctum')->prefix('user')->group(function () {
+        Route::get('students', [UserController::class, 'getAllStudents']);
+        Route::get('faculties', [UserController::class, 'getAllFaculties']);
     });
 });

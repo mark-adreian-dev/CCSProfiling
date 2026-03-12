@@ -2,9 +2,7 @@
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domain\Enums\OrderDirection;
 use App\Domain\Enums\RoleEnum;
-use App\Domain\Enums\UserSortBy;
 use App\Domain\Repositories\UserRepositoryInterface;
 use App\Infrastructure\Models\FacultyProfile;
 use App\Infrastructure\Models\StudentProfile;
@@ -55,7 +53,8 @@ class UserRepository implements UserRepositoryInterface
             $facultyEntity = new FacultyProfileEntity(
                 id: $faculty->id,
                 employee_no: $faculty->employee_no,
-                position: $faculty->position
+                expertise: $faculty->expertise
+
             );
         }
 
@@ -110,7 +109,7 @@ class UserRepository implements UserRepositoryInterface
             ? new FacultyProfileEntity(
                 id: $user->facultyProfile->id,
                 employee_no: $user->facultyProfile->employee_no,
-                position: $user->facultyProfile->position
+                expertise: $user->facultyProfile->expertise
             )
             : null;
 
@@ -154,6 +153,17 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::query()
             ->where('role', RoleEnum::STUDENT->value)
-            ->with('studentProfile'); 
+            ->with('studentProfile');
+    }
+
+    public function findAllFacultyProfiles(): Builder
+    {
+        return User::query()
+            ->with('facultyProfile')
+
+            ->whereNotIn('role', [
+                RoleEnum::STUDENT->value,
+                RoleEnum::ADMIN->value,
+            ]);
     }
 }

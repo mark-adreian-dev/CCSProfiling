@@ -44,10 +44,10 @@ class UserResponseDTO
             $response->facultyProfile = (object) [
                 'id' => $user->facultyProfile->id,
                 'employee_no' => $user->facultyProfile->employee_no,
-                'position' => $user->facultyProfile->position,
+                'expertise' => $user->facultyProfile->expertise
             ];
         }
-        
+
         return $response;
     }
 }
