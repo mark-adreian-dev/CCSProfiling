@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Application\UseCases\StudentProfile;
+namespace App\Application\UseCases\User;
 
-use App\Application\DTO\User\UserResponseDTO;
+use App\Domain\Entities\FacultyProfileEntity;
 use App\Domain\Entities\StudentProfileEntity;
 use App\Domain\Entities\UserEntity;
-use App\Domain\Enums\OrderDirection;
 use App\Domain\Enums\OrderEnum;
 use App\Domain\Enums\UserSortBy;
 use App\Domain\Repositories\UserRepositoryInterface;
+use App\Infrastructure\Models\FacultyProfile;
 use App\Infrastructure\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
-class GetAllStudentProfileUseCase
+class GetAllFacultyProfileService
 {
     public function __construct(
         protected UserRepositoryInterface $userRepository
@@ -32,7 +32,7 @@ class GetAllStudentProfileUseCase
         }
 
         // 1. Get the Builder from the repository
-        $query = $this->userRepository->findAllStudentProfiles();
+        $query = $this->userRepository->findAllFacultyProfiles();
 
         // 2. Apply Search Filter
         if ($search) {
@@ -70,15 +70,13 @@ class GetAllStudentProfileUseCase
                 created_at: $user->created_at,
                 updated_at: $user->updated_at,
                 deleted_at: $user->deleted_at,
-                // Map the nested Student Profile Relation
-                studentProfile: $user->studentProfile ? new StudentProfileEntity(
-                    id: $user->studentProfile->id,
-                    student_no: $user->studentProfile->student_no,
-                    course: $user->studentProfile->course,
-                    year_level: $user->studentProfile->year_level
+
+                facultyProfile: $user->facultyProfile ? new FacultyProfileEntity(
+                    id: $user->facultyProfile->id,
+                    employee_no: $user->facultyProfile->employee_no,
+                    expertise: $user->facultyProfile->expertise,
                 ) : null,
             );
-
         });
     }
 }
