@@ -1,5 +1,3 @@
-"use client";
-
 import { Badge } from "@/core/presentation/components/base/ui/badge";
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/core/presentation/components/base/ui/card";
 import { TrendingUpIcon, TrendingDownIcon } from "lucide-react";

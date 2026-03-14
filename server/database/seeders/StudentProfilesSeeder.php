@@ -10,10 +10,17 @@ class StudentProfilesSeeder extends Seeder
 {
     public function run(): void
     {
-        $students = User::where('role', 'student')->get();
+        // Get the starting point from the DB so you don't overwrite/duplicate
+        $lastStudentNo = (int) StudentProfile::max('student_no') ?: 0;
+
+        // Get students who don't have a profile yet
+        $students = User::where('role', 'student')
+            ->whereDoesntHave('studentProfile') // Avoid duplicate profiles
+            ->get();
 
         foreach ($students as $index => $student) {
-            $studentNumber = str_pad($index + 1, 7, '0', STR_PAD_LEFT);
+            // Increment based on the last known number in the DB
+            $studentNumber = str_pad($lastStudentNo + $index + 1, 7, '0', STR_PAD_LEFT);
 
             StudentProfile::firstOrCreate(
                 ['user_id' => $student->id],

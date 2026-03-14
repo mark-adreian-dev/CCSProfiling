@@ -30,6 +30,7 @@ class UserResponseDTO
         $response->contact_number = $user->contact_number;
         $response->address = $user->address;
         $response->profile_picture = $user->profile_picture;
+        $response->created_at = $user->created_at;
 
         if ($user->studentProfile) {
             $response->studentProfile = (object) [
@@ -44,7 +45,7 @@ class UserResponseDTO
             $response->facultyProfile = (object) [
                 'id' => $user->facultyProfile->id,
                 'employee_no' => $user->facultyProfile->employee_no,
-                'expertise' => $user->facultyProfile->expertise
+                'expertise' => $user->facultyProfile->expertise,
             ];
         }
 
