@@ -19,6 +19,7 @@ export const UserSchema = z.object({
   contact_number: z.string(),
   address: z.string(),
   profile_picture: z.string().nullable(),
+  created_at: z.string(),
   studentProfile: StudentProfileSchema,
   facultyProfile: FacultyProfileSchema,
 });

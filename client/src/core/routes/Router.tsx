@@ -6,6 +6,7 @@ import { ROUTER_CONFIG } from "../config/router.config";
 import ProtectedRoutes from "./ProtectedRoutes";
 import AuthRoutes from "./AuthRoutes";
 import LoadingSpinner from "../presentation/components/custom/Loader/LoadingSpinner";
+import FacultyPage from "@/features/Faculty/pages/FacultyPage";
 
 // Lazy Loaded Layouts and Components
 const AuthLayout = lazy(() => import("@/features/Authentication/layout/AuthLayout"));
@@ -38,17 +39,16 @@ export const Router = () => {
             {/* FACULTY SECTION */}
             <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.BASE} element={<FacultyLayout />}>
               <Route index element={<Navigate to={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.ROUTES.QUICK_FIND.BASE} replace />} />
-              <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.ROUTES.QUICK_FIND.BASE} element={<h1>Faculty</h1>} />
+              <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.ROUTES.QUICK_FIND.BASE} element={<FacultyPage />} />
             </Route>
 
             {/* STUDENT SECTION */}
             <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.BASE} element={<StudentLayout />}>
               <Route index element={<Navigate to={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.ROUTES.QUICK_FIND.BASE} replace />} />
-              <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.ROUTES.QUICK_FIND.BASE} element={<h1>Student</h1>} />
+              <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.ROUTES.QUICK_FIND.BASE} element={<>Student</>} />
             </Route>
           </Route>
         </Route>
-
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Suspense>

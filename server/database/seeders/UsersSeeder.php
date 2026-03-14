@@ -10,94 +10,28 @@ class UsersSeeder extends Seeder
 {
     public function run(): void
     {
-        // Admin
-        User::create([
-            'email' => 'admin@system.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-            'department_id' => null,
-            'name_prefix' => null,
-            'first_name' => 'System',
-            'middle_name' => null,
-            'last_name' => 'Administrator',
-            'name_suffix' => null,
-            'date_of_birth' => '1990-01-01',
-            'sex' => 'Male',
-            'contact_number' => '09123456789',
-            'address' => 'System Office',
-            'profile_picture' => null,
-        ]);
+        // 1. Create your specific "Fixed" accounts first
+        $fixedUsers = [
+            ['email' => 'admin@system.com', 'role' => 'admin', 'first_name' => 'System', 'last_name' => 'Administrator'],
+            ['email' => 'dean1@example.com', 'role' => 'dean', 'first_name' => 'Dean', 'last_name' => 'User'],
+            ['email' => 'chair1@example.com', 'role' => 'chair', 'first_name' => 'Chair', 'last_name' => 'User'],
+            ['email' => 'faculty1@example.com', 'role' => 'faculty', 'first_name' => 'Faculty', 'last_name' => 'User'],
+            ['email' => 'student1@example.com', 'role' => 'student', 'first_name' => 'Student', 'last_name' => 'User'],
+        ];
 
-        // Dean
-        User::create([
-            'email' => 'dean1@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'dean',
-            'department_id' => 1,
-            'name_prefix' => 'Dr.',
-            'first_name' => 'Dean',
-            'middle_name' => null,
-            'last_name' => 'User',
-            'name_suffix' => null,
-            'date_of_birth' => '1980-05-15',
-            'sex' => 'Male',
-            'contact_number' => '09123456780',
-            'address' => 'University Campus',
-            'profile_picture' => null,
-        ]);
+        foreach ($fixedUsers as $userData) {
+            User::create(array_merge([
+                'password' => Hash::make('password'),
+                'department_id' => 1,
+                'sex' => 'Male',
+                'contact_number' => '09123456789',
+                'address' => 'University Campus',
+                'date_of_birth' => '1990-01-01',
+            ], $userData));
+        }
 
-        // Chair
-        User::create([
-            'email' => 'chair1@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'chair',
-            'department_id' => 1,
-            'name_prefix' => null,
-            'first_name' => 'Chair',
-            'middle_name' => null,
-            'last_name' => 'User',
-            'name_suffix' => null,
-            'date_of_birth' => '1985-03-20',
-            'sex' => 'Female',
-            'contact_number' => '09123456781',
-            'address' => 'University Campus',
-            'profile_picture' => null,
-        ]);
-
-        // Faculty
-        User::create([
-            'email' => 'faculty1@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'faculty',
-            'department_id' => 1,
-            'name_prefix' => null,
-            'first_name' => 'Faculty',
-            'middle_name' => null,
-            'last_name' => 'User',
-            'name_suffix' => null,
-            'date_of_birth' => '1990-07-10',
-            'sex' => 'Male',
-            'contact_number' => '09123456782',
-            'address' => 'University Campus',
-            'profile_picture' => null,
-        ]);
-
-        // Student
-        User::create([
-            'email' => 'student1@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'student',
-            'department_id' => 1,
-            'name_prefix' => null,
-            'first_name' => 'Student',
-            'middle_name' => null,
-            'last_name' => 'User',
-            'name_suffix' => null,
-            'date_of_birth' => '2002-09-12',
-            'sex' => 'Male',
-            'contact_number' => '09123456783',
-            'address' => 'Student Dormitory',
-            'profile_picture' => null,
-        ]);
+        // 2. Generate 2,000 random accounts
+        // This will take a few seconds but is way faster than manual entry
+        User::factory()->count(2000)->create();
     }
 }

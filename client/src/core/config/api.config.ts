@@ -8,5 +8,13 @@ export const API_CONFIG = {
       USER: `/auth/user`,
       CSRF_TOKEN: `/sanctum/csrf-cookie`,
     },
+    USER: {
+      FACULTY: {
+        GET_ALL: `/user/faculties`,
+      },
+      STUDENT: {
+        GET_ALL: `/user/students`,
+      },
+    },
   },
 };

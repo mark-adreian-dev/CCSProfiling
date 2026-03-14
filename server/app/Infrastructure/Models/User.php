@@ -6,6 +6,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Database\Factories\UserFactory; // Import your factory here
 
 class User extends Authenticatable
 {
@@ -41,6 +42,11 @@ class User extends Authenticatable
     | Relationships
     |--------------------------------------------------------------------------
     */
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
 
     public function department()
     {

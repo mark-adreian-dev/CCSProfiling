@@ -2,7 +2,7 @@ import type { LoginRequest } from "../domain/schema/auth.schema";
 import type { AuthSuccessDTO } from "../infrastructure/dto/auth.dto";
 import type { UserSuccessDTO } from "../infrastructure/dto/user.dto";
 import type { AuthRepositoryInterface } from "../infrastructure/repository/interface/auth.repository.interface";
-import type { AuthUseCaseInterface } from "./interface/auth.service.interface";
+import type { AuthUseCaseInterface } from "./interface/auth.use-case.interface";
 
 export class AuthUseCase implements AuthUseCaseInterface {
   constructor(private repository: AuthRepositoryInterface) {}

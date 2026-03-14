@@ -11,25 +11,24 @@ class FacultyProfilesSeeder extends Seeder
 {
     public function run(): void
     {
-        $facultyUsers = User::where('role', '!=', 'student')->get();
+        // 1. Get the starting point ONCE outside the loop
+        $lastStudentNo = (int) StudentProfile::max('student_no') ?: 0;
+
+        // 2. Fetch only users who actually need a faculty profile
+        // Excluding 'admin' and 'student'
+        $facultyUsers = User::whereIn('role', ['faculty', 'chair', 'dean'])->get();
 
         foreach ($facultyUsers as $index => $user) {
+            // Calculate employee number dynamically based on index
+            $employeeNumber = str_pad($lastStudentNo + $index + 1, 7, '0', STR_PAD_LEFT);
 
-            $maxStudentNo = StudentProfile::max('student_no') ?: 0;
-
-            foreach ($facultyUsers as $index => $user) {
-
-                // Start numbering faculty after the last student number
-                $employeeNumber = str_pad($maxStudentNo + $index + 1, 7, '0', STR_PAD_LEFT);
-
-                FacultyProfile::firstOrCreate(
-                    ['user_id' => $user->id],
-                    [
-                        'employee_no' => $employeeNumber,
-                        'expertise' => 'General Expertise',
-                    ]
-                );
-            }
+            FacultyProfile::firstOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'employee_no' => $employeeNumber,
+                    'expertise' => 'General Expertise',
+                ]
+            );
         }
     }
 }

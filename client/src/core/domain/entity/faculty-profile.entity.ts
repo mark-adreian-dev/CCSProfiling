@@ -4,7 +4,7 @@ export const FacultyProfileSchema = z
   .object({
     id: z.number(),
     employee_no: z.string(),
-    position: z.string().nullable(),
+    expertise: z.string(),
   })
   .optional();
 
