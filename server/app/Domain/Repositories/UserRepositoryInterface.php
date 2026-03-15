@@ -14,5 +14,10 @@ interface UserRepositoryInterface
 
     public function findAllStudentProfiles(): Builder;
     public function findAllFacultyProfiles(): Builder;
+    public function findAllFacultyProfilesById(string $employee_no): Builder;
 
+    public function createFacultyUser(UserEntity $userEntity, array $data): UserEntity;
+    public function createAdminUser(UserEntity $userEntity): UserEntity;
+
+    public function createStudentUser(UserEntity $userEntity, array $data): UserEntity;
 }

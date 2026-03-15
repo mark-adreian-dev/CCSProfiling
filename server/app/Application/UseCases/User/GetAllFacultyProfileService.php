@@ -31,25 +31,36 @@ class GetAllFacultyProfileService
             throw new Exception("Unauthorized", 401);
         }
 
-        // 1. Get the Builder from the repository
-        $query = $this->userRepository->findAllFacultyProfiles();
-
-        // 2. Apply Search Filter
+        // 1. Determine the base query
         if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('first_name', 'like', "%{$search}%")
-                    ->orWhere('last_name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
-            });
+            // First, check if the search string is a valid Employee ID
+            $idQuery = $this->userRepository->findAllFacultyProfilesById($search);
+
+            if ($idQuery->exists()) {
+                // If an ID match exists, use the ID-specific query
+                $query = $idQuery;
+            } else {
+                // Otherwise, use the general list and apply name/email filters
+                $query = $this->userRepository->findAllFacultyProfiles();
+                $query->where(function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                        ->orWhere('last_name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            }
+        } else {
+            // No search query provided, get all faculty profiles
+            $query = $this->userRepository->findAllFacultyProfiles();
         }
 
-        // 3. Apply Sorting and Paginate
+        // 2. Apply Sorting and Paginate
+        // Note: If sorting by a field that isn't in the users table,
+        // you may need additional join logic here.
         $query->orderBy($sortBy->value, $order->value);
 
-        // This executes the database query
         $paginated = $query->paginate(perPage: $pageSize, page: $page);
 
-        // 4. Complete Mapping Logic
+        // 3. Map to Entities
         return $paginated->through(function (User $user) {
             return new UserEntity(
                 id: $user->id,
@@ -67,9 +78,9 @@ class GetAllFacultyProfileService
                 contact_number: $user->contact_number,
                 address: $user->address,
                 profile_picture: $user->profile_picture,
-                created_at: $user->created_at,
-                updated_at: $user->updated_at,
-                deleted_at: $user->deleted_at,
+                created_at: (string) $user->created_at,
+                updated_at: (string) $user->updated_at,
+                deleted_at: $user->deleted_at ? (string) $user->deleted_at : null,
 
                 facultyProfile: $user->facultyProfile ? new FacultyProfileEntity(
                     id: $user->facultyProfile->id,

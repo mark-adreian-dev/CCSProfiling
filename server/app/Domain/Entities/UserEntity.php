@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Hash;
 class UserEntity
 {
     public function __construct(
-        public int $id,
+        public ?int $id,
         public string $email,
         public string $password,
 

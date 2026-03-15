@@ -13,6 +13,7 @@ class FacultyProfile extends Model
 
     protected $fillable = [
         'user_id',
+        'employee_no',
         'expertise'
     ];
 

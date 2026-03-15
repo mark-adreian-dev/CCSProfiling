@@ -73,8 +73,9 @@ class GetAllStudentProfileService
                 studentProfile: $user->studentProfile ? new StudentProfileEntity(
                     id: $user->studentProfile->id,
                     student_no: $user->studentProfile->student_no,
-                    course: $user->studentProfile->course,
-                    year_level: $user->studentProfile->year_level
+                    program_id: (int) $user->studentProfile->program_id,
+                    academic_year: (int) $user->studentProfile->academic_year,
+                    academic_status: $user->studentProfile->academic_status
                 ) : null,
             );
 

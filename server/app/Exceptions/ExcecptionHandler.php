@@ -11,7 +11,17 @@ class ExcecptionHandler
             'status' => 401,
             'message' => 'Invalid Credentials',
         ]))->response()->setStatusCode(401);
-    } 
+    }
+
+    public function validationError(array $errors)
+    {
+        return (new FailedResource([
+            'status' => 422,
+            'message' => 'Validation Failed',
+            'errors' => $errors, // Pass the detailed errors here
+        ]))->response()->setStatusCode(422);
+    }
+
     public function unauthenticatedError()
     {
         return (new FailedResource([
