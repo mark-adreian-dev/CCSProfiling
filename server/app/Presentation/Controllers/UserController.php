@@ -9,10 +9,12 @@ use App\Application\UseCases\User\GetAllStudentProfileService;
 use App\Domain\Entities\UserEntity;
 use App\Domain\Enums\OrderEnum;
 use App\Domain\Enums\UserSortBy;
+use App\Presentation\Requests\StoreUserValidation;
 use App\Presentation\Controllers\Controller;
 use App\Presentation\Requests\PaginationValidation;
 use App\Presentation\Resources\FailedResource;
 use App\Presentation\Resources\SuccessResource;
+use App\Application\UseCases\User\StoreUserService;
 use Exception;
 
 class UserController extends Controller
@@ -111,6 +113,35 @@ class UserController extends Controller
 
     }
 
+    public function createUser(StoreUserValidation $request, StoreUserService $storeUserUseCase)
+    {
+        try {
+            // 1. Extract validated data
+            $data = $request->validated();
 
+            // 2. Handle Profile Picture if present (Optional but recommended)
+            if ($request->hasFile('profile_picture')) {
+                $data['profile_picture'] = $request->file('profile_picture')->store('profiles', 'public');
+            }
 
+            // 3. Execute the Use Case
+            $userEntity = $storeUserUseCase->execute($data);
+
+            // 4. Transform to DTO and return through your SuccessResource
+            return new SuccessResource([
+                "data" => UserResponseDTO::responseData($userEntity),
+                "status" => 201,
+                "message" => "User created successfully"
+            ]);
+
+        } catch (Exception $e) {
+
+            $statusCode = (int) $e->getCode() ?: 400;
+
+            return new FailedResource([
+                "status" => $statusCode,
+                "message" => $e->getMessage(),
+            ])->response()->setStatusCode($statusCode);
+        }
+    }
 }

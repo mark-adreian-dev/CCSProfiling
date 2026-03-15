@@ -19,13 +19,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->statefulApi();
 
         $middleware->validateCsrfTokens(except: [
-            'api/v1/auth/*'
+            'api/v1/auth/*',
+            'api/v1/user/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
 
         $exceptions->render(function (ValidationException $e) {
-            return new ExcecptionHandler()->invalidCredentials();
+            return new ExcecptionHandler()->validationError($e->errors());
         });
 
         $exceptions->render(function (AuthenticationException $e) {

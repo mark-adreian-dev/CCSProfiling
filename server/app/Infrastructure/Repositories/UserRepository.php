@@ -12,6 +12,8 @@ use App\Domain\Entities\UserEntity;
 use App\Domain\Entities\StudentProfileEntity;
 use App\Domain\Entities\FacultyProfileEntity;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -44,8 +46,9 @@ class UserRepository implements UserRepositoryInterface
             $studentEntity = new StudentProfileEntity(
                 id: $student->id,
                 student_no: $student->student_no,
-                course: $student->course,
-                year_level: $student->year_level
+                program_id: $student->program_id,
+                academic_year: $student->academic_year,
+                academic_status: $student->academic_status
             );
         }
 
@@ -100,8 +103,9 @@ class UserRepository implements UserRepositoryInterface
             ? new StudentProfileEntity(
                 id: $user->studentProfile->id,
                 student_no: $user->studentProfile->student_no,
-                course: $user->studentProfile->course,
-                year_level: $user->studentProfile->year_level
+                program_id: (int) $user->studentProfile->program_id,
+                academic_year: (int) $user->studentProfile->academic_year,
+                academic_status: $user->studentProfile->academic_status
             )
             : null;
 
@@ -148,14 +152,12 @@ class UserRepository implements UserRepositoryInterface
         request()->session()->invalidate();
         request()->session()->regenerateToken();
     }
-
     public function findAllStudentProfiles(): Builder
     {
         return User::query()
             ->where('role', RoleEnum::STUDENT->value)
             ->with('studentProfile');
     }
-
     public function findAllFacultyProfiles(): Builder
     {
         return User::query()
@@ -165,5 +167,112 @@ class UserRepository implements UserRepositoryInterface
                 RoleEnum::STUDENT->value,
                 RoleEnum::ADMIN->value,
             ]);
+    }
+    public function findAllFacultyProfilesById(string $employee_no): Builder
+    {
+        return User::query()
+            ->with('facultyProfile')
+            ->whereHas('facultyProfile', function ($query) use ($employee_no) {
+                $query->where('employee_no', $employee_no);
+            })
+            ->whereNotIn('role', [
+                RoleEnum::STUDENT->value,
+                RoleEnum::ADMIN->value,
+            ]);
+    }
+
+    public function createAdminUser(UserEntity $userEntity): UserEntity
+    {
+        // 1. Create the Eloquent Model
+        $user = User::create([
+            'email' => $userEntity->email,
+            'role' => $userEntity->role,
+            'password' => Hash::make('dangal_password'),
+            'department_id' => 1,
+            'name_prefix' => $userEntity->name_prefix,
+            'first_name' => $userEntity->first_name,
+            'middle_name' => $userEntity->middle_name,
+            'last_name' => $userEntity->last_name,
+            'name_suffix' => $userEntity->name_suffix,
+            'date_of_birth' => $userEntity->date_of_birth,
+            'sex' => $userEntity->sex,
+            'contact_number' => $userEntity->contact_number,
+            'address' => $userEntity->address,
+            'profile_picture' => $userEntity->profile_picture,
+        ]);
+
+        // 2. Hydrate the Entity with DB-generated values
+        $userEntity->id = $user->id;
+        $userEntity->created_at = (string) $user->created_at;
+        $userEntity->updated_at = (string) $user->updated_at;
+
+        // 3. Return the Entity to satisfy the Use Case type hint
+        return $userEntity;
+    }
+
+    public function createFacultyUser(UserEntity $userEntity, array $data): UserEntity
+    {
+        return DB::transaction(function () use ($userEntity, $data) {
+            // 1. Create the User record
+            $user = User::create([
+                'email' => $userEntity->email,
+                'role' => $userEntity->role,
+                'password' => Hash::make('dangal_password'),
+                'department_id' => 1,
+                'name_prefix' => $userEntity->name_prefix,
+                'first_name' => $userEntity->first_name,
+                'middle_name' => $userEntity->middle_name,
+                'last_name' => $userEntity->last_name,
+                'name_suffix' => $userEntity->name_suffix,
+                'date_of_birth' => $userEntity->date_of_birth,
+                'sex' => $userEntity->sex,
+                'contact_number' => $userEntity->contact_number,
+                'address' => $userEntity->address,
+                'profile_picture' => $userEntity->profile_picture,
+            ]);
+
+            // 2. Generate Employee No
+            $lastNo = (int) FacultyProfile::max('employee_no') ?: 0;
+            $newEmployeeNo = str_pad($lastNo + 1, 7, '0', STR_PAD_LEFT);
+
+            // 3. Create Profile using the $data array passed from the Use Case
+            $profileModel = FacultyProfile::create([
+                'user_id' => $user->id,
+                'employee_no' => $newEmployeeNo,
+                'expertise' => $data['expertise'] ?? null, // Expertise extracted here!
+            ]);
+
+            // 4. Hydrate Entity for response
+            $userEntity->id = $user->id;
+            $userEntity->created_at = $user->created_at;
+            $userEntity->facultyProfile = new FacultyProfileEntity(
+                id: $profileModel->id,
+                employee_no: $profileModel->employee_no,
+                expertise: $profileModel->expertise
+            );
+
+            return $userEntity;
+        });
+    }
+
+    public function createStudentUser(UserEntity $userEntity, array $data): UserEntity
+    {
+        return DB::transaction(function () use ($userEntity) {
+            // 1. Create the Base User
+            $lastNo = (int) FacultyProfile::max('employee_no') ?: 0;
+            $newEmployeeNo = str_pad($lastNo + 1, 7, '0', STR_PAD_LEFT);
+
+
+            $facultyProfile = FacultyProfile::create([
+                'user_id' => $userEntity->id,
+                'employee_no' => $newEmployeeNo,
+                'expertise' => $userEntity->facultyProfile->expertise,
+            ]);
+
+            $userEntity->facultyProfile->id = $facultyProfile->id;
+            $userEntity->facultyProfile->employee_no = $facultyProfile->employee_no;
+
+            return $userEntity;
+        });
     }
 }
