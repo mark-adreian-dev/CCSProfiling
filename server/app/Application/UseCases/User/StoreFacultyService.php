@@ -3,14 +3,13 @@
 namespace App\Application\UseCases\User;
 
 use App\Domain\Entities\UserEntity;
-use App\Domain\Entities\StudentProfileEntity;
-use App\Domain\Entities\FacultyProfileEntity;
 use App\Domain\Repositories\UserRepositoryInterface;
 use App\Domain\Enums\RoleEnum;
 use Exception;
+use Carbon\Carbon;
 use Hash;
 
-class StoreUserService
+class StoreFacultyService
 {
     public function __construct(
         private readonly UserRepositoryInterface $userRepository
@@ -27,8 +26,9 @@ class StoreUserService
         $userEntity = new UserEntity(
             id: null,
             email: $data['email'],
+            role: RoleEnum::FACULTY->value,
+            age: Carbon::parse($data['date_of_birth'])->age,
             password: Hash::make('password'),
-            role: $data['role'],
             department_id: isset($data['department_id']) ? (int) $data['department_id'] : null,
             name_prefix: $data['name_prefix'] ?? null,
             first_name: $data['first_name'],
@@ -42,12 +42,6 @@ class StoreUserService
             profile_picture: $data['profile_picture'] ?? null,
         );
 
-        if ($userEntity->role === RoleEnum::ADMIN) {
-            return $this->userRepository->createAdminUser($userEntity);
-        } else if ($userEntity->role === RoleEnum::STUDENT) {
-            return $this->userRepository->createStudentUser($userEntity, $data);
-        } else {
-            return $this->userRepository->createFacultyUser($userEntity, $data);
-        }
+        return $this->userRepository->createFacultyUser($userEntity, $data);
     }
 }

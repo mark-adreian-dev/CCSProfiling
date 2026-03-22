@@ -23,6 +23,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $dob = fake()->date('Y-m-d', '2005-01-01');
+
         return [
             'email' => fake()->unique()->safeEmail(),
             'password' => Hash::make('password'),
@@ -33,7 +35,8 @@ class UserFactory extends Factory
             'middle_name' => null,
             'last_name' => fake()->lastName(),
             'name_suffix' => null,
-            'date_of_birth' => fake()->date('Y-m-d', '2005-01-01'),
+            'date_of_birth' => $dob,
+            'age' => fake()->numberBetween(18, 65),
             'sex' => fake()->randomElement([GenderEnum::FEMALE, GenderEnum::MALE]),
             'contact_number' => '09' . fake()->numerify('#########'),
             'address' => fake()->address(),

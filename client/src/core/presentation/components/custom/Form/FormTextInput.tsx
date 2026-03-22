@@ -1,67 +1,77 @@
 import { Controller } from "react-hook-form";
-import type { UseFormReturn, FieldValues, Path } from "react-hook-form";
+import type { Control, FieldValues, Path } from "react-hook-form";
 import { useState, type InputHTMLAttributes } from "react";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/core/presentation/components/base/ui/field";
 import { Input } from "@/core/presentation/components/base/ui/input";
 import { Eye, EyeOff, type LucideIcon } from "lucide-react";
 
+// Replaced 'any' with unknown for safer loosening of strictness
 export type FormTextInputProps<T extends FieldValues> = {
-  formInstance: UseFormReturn<T>;
+  control: Control<T>;
   FieldIcon?: LucideIcon;
   name: Path<T>;
   label?: string;
   description?: string;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, "name">;
 
-export default function FormTextInput<T extends FieldValues>({
-  formInstance,
-  name,
-  label,
-  description,
-  FieldIcon,
-  ...inputProps
-}: FormTextInputProps<T>) {
+export default function FormTextInput<T extends FieldValues>({ control, name, label, description, FieldIcon, ...inputProps }: FormTextInputProps<T>) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const Icon = FieldIcon;
   const isPasswordField = inputProps.type === "password";
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev);
+  };
 
   return (
     <Controller
       name={name}
-      control={formInstance.control}
+      control={control}
       render={({ field, fieldState }) => (
-        <Field data-invalid={fieldState.invalid}>
+        <Field className="w-full flex flex-col gap-1" data-invalid={fieldState.invalid}>
+          {/* Label Section */}
           {label && (
-            <div className="flex items-center gap-2 mb-1">
-              {Icon && <Icon className="w-4 h-4" />}
-              <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+            <div className="flex items-center gap-2 h-6">
+              {FieldIcon && <FieldIcon className="w-4 h-4 text-muted-foreground" />}
+              <FieldLabel htmlFor={field.name} className="flex items-center gap-1">
+                {label}
+                {inputProps.required && <span className="text-destructive">*</span>}
+              </FieldLabel>
             </div>
           )}
 
-          <div className="relative flex items-center border border-primary/50 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-primary">
+          {/* Input Container */}
+          <div className={`relative borderflex items-center rounded-md overflow-hidden`}>
             <Input
               {...field}
               {...inputProps}
               id={field.name}
+              value={field.value ?? ""}
               aria-invalid={fieldState.invalid}
-              className="border-none focus-visible:ring-0 w-full pr-10"
+              className={`w-full pr-10 ${fieldState.error && "border-destructive!"}`}
               type={isPasswordField ? (isPasswordVisible ? "text" : "password") : inputProps.type}
             />
 
+            {/* Password Toggle Logic */}
             {isPasswordField && (
               <button
                 type="button"
-                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer pr-3"
-                tabIndex={-1}
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 flex items-center justify-center text-muted-foreground hover:text-foreground focus:outline-none"
+                aria-label={isPasswordVisible ? "Hide password" : "Show password"}
               >
-                {isPasswordVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+                {isPasswordVisible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             )}
           </div>
 
-          {description && <FieldDescription>{description}</FieldDescription>}
-          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          {/* Reserved Error Space */}
+          <div className="min-h-5 mt-0.5">
+            {description && !fieldState.error && <FieldDescription className="text-[11px] leading-tight">{description}</FieldDescription>}
+
+            {fieldState.error && (
+              <FieldError className="text-[11px] leading-tight font-medium text-destructive">{fieldState.error.message}</FieldError>
+            )}
+          </div>
         </Field>
       )}
     />

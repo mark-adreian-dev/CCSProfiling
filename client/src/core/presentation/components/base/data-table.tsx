@@ -161,4 +161,3 @@ export function DataTable<TData extends { id: number }>({
     </div>
   );
 }
-

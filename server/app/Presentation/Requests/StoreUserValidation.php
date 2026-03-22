@@ -3,7 +3,6 @@
 namespace App\Presentation\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class StoreUserValidation extends FormRequest
 {
@@ -17,7 +16,6 @@ class StoreUserValidation extends FormRequest
         return [
             // User Table Validation
             'email' => ['required', 'email', 'max:100', 'unique:users,email'],
-            'role' => ['required', 'string', 'in:student,faculty,chair,dean,admin'],
 
             // Name Fields
             'name_prefix' => ['nullable', 'string', 'max:10'],
@@ -31,7 +29,12 @@ class StoreUserValidation extends FormRequest
             'sex' => ['required', 'in:Male,Female'],
             'contact_number' => ['nullable', 'string', 'max:20'],
             'address' => ['nullable', 'string', 'max:255'],
-            'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'profile_picture' => [
+                'nullable',
+                'image',             // Ensures the file is an image (jpg, png, bmp, gif, svg, or webp)
+                'mimes:jpeg,png,jpg', // Explicitly restrict to these extensions
+                'max:5120',          // Limit size to 5MB (5120 kilobytes)
+            ],
 
             // Student Profile Specific Validation
             'student_no' => [

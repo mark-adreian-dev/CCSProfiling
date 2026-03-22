@@ -9,7 +9,7 @@ class UserEntity
         public string $email,
         public string $password,
 
-        public string $role,
+        public ?string $role,
 
         public ?int $department_id = null,
 
@@ -18,6 +18,7 @@ class UserEntity
         public ?string $middle_name = null,
         public string $last_name,
         public ?string $name_suffix = null,
+        public ?string $age = null,
 
         public string $date_of_birth,
 

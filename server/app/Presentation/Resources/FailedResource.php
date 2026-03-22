@@ -13,7 +13,7 @@ class FailedResource extends JsonResource
         return [
             "status" => $this['status'],
             "message" => $this['message'],
-            // 'errors' => $this->when(isset($this->resource['errors']), $this->resource['errors']),
+            'errors' => $this->when(isset($this->resource['errors']), $this->resource['errors']),
         ];
     }
 }

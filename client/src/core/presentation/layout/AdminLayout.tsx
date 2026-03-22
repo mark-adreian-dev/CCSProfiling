@@ -10,8 +10,9 @@ import { Outlet } from "react-router-dom";
 import { BookUserIcon, UserCircle2Icon, BookMarkedIcon, ActivitySquare, HouseIcon, CameraIcon, FileTextIcon } from "lucide-react";
 import type { AppSideBar } from "../types/app-sidebar.types";
 import { useMemo } from "react";
+import { ROUTER_CONFIG } from "@/core/config/router.config";
 
-export default function FacultyLayout() {
+export default function AdminLayout() {
   const user = useAuthStore((state) => state.user);
   const appSideBarConfig: AppSideBar = useMemo(
     () => ({
@@ -21,8 +22,8 @@ export default function FacultyLayout() {
         avatar: user?.profile_picture ?? ManInSuit,
       },
       navMain: [
-        { title: "Students", url: "#", icon: <BookUserIcon /> },
-        { title: "Faculty", url: "#", icon: <UserCircle2Icon /> },
+        { title: "Students", url: ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.BASE, icon: <BookUserIcon /> },
+        { title: "Faculty", url: ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.BASE, icon: <UserCircle2Icon /> },
         { title: "Curriculum", url: "#", icon: <BookMarkedIcon /> },
         { title: "Events", url: "#", icon: <ActivitySquare /> },
         { title: "Rooms", url: "#", icon: <HouseIcon /> },

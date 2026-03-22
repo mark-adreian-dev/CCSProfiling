@@ -13,8 +13,16 @@ Route::prefix('api/v1')->group(function () {
     });
 
     Route::middleware('auth:sanctum')->prefix('user')->group(function () {
-        Route::get('students', [UserController::class, 'getAllStudents']);
         Route::get('faculties', [UserController::class, 'getAllFaculties']);
-        Route::post('faculties', [UserController::class, 'createUser']);
+        Route::post('faculties', [UserController::class, 'createFacultyUser']);
+        Route::get('faculties/{id}', [UserController::class, 'getFacultyByID']);
+        Route::patch('faculties/{id}', [UserController::class, 'updateFacultyUser']);
+
+
+        Route::get('students', [UserController::class, 'getAllStudents']);
     });
+});
+
+Route::get('/php-check', function () {
+    phpinfo();
 });

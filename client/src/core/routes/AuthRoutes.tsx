@@ -6,19 +6,22 @@ import { useAuthStore } from "../store/auth.store";
 import LoadingSpinner from "../presentation/components/custom/Loader/LoadingSpinner";
 
 export default function AuthRoutes() {
-  const { data: user, isLoading } = useGetUserQuery()
-  const setUser = useAuthStore((state) => state.setUser)
-  const navigate = useNavigate()
+  const { data: user, isLoading } = useGetUserQuery();
+  const setUser = useAuthStore((state) => state.setUser);
+  const navigate = useNavigate();
   useEffect(() => {
     if (user) {
       setUser(user);
-      navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.URL)
+      navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.URL);
     }
-  }, [navigate, setUser, user])
+  }, [navigate, setUser, user]);
 
-  if(isLoading) return <div className="w-full h-screen flex items-center justify-center">
-    <LoadingSpinner message="Verifying request"/>
-  </div>;
+  if (isLoading)
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <LoadingSpinner message="Verifying request" />
+      </div>
+    );
 
   return <Outlet />;
 }

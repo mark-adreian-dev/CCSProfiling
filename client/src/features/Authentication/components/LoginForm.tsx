@@ -31,7 +31,6 @@ export function LoginForm() {
   return (
     <Form form={form} onSubmit={handleSubmit}>
       <div className="grid gap-10 relative">
-        {/* Optional: Add a subtle overlay instead of replacing the whole component */}
         {isLoggingIn && (
           <div className="absolute inset-0 bg-white/50 z-10 flex items-center justify-center">
             <LoadingSpinner message="Logging in..." />
@@ -46,19 +45,15 @@ export function LoginForm() {
         <div className="grid gap-6">
           <FormTextInput
             FieldIcon={UserCircleIcon}
-            formInstance={form}
+            control={form.control}
             name={"identification_id"}
             label={"User ID"}
             type={"text"}
             disabled={isLoggingIn}
           />
-          <FormTextInput FieldIcon={LockIcon} formInstance={form} name={"password"} label={"Password"} type={"password"} disabled={isLoggingIn} />
+          <FormTextInput FieldIcon={LockIcon} control={form.control} name={"password"} label={"Password"} type={"password"} disabled={isLoggingIn} />
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isLoggingIn || !isDirty} // Now this works correctly
-          >
+          <Button type="submit" className="w-full" disabled={isLoggingIn || !isDirty}>
             {isLoggingIn ? "Logging in..." : "Login"}
           </Button>
         </div>

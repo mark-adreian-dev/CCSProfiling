@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('middle_name', 50)->nullable();
             $table->string('last_name', 50);
             $table->string('name_suffix', 20)->nullable();
+            $table->unsignedTinyInteger('age');
 
             $table->date('date_of_birth');
 

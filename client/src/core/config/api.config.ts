@@ -1,6 +1,7 @@
 export const API_CONFIG = {
   baseApiUrl: import.meta.env.VITE_API_URL,
   baseUrlDomain: import.meta.env.VITE_API_URL_DOMAIN,
+  baseUrlForImage: `${import.meta.env.VITE_API_URL_DOMAIN}/storage/`,
   enpoints: {
     AUTH: {
       LOGIN: `/login`,
@@ -10,10 +11,12 @@ export const API_CONFIG = {
     },
     USER: {
       FACULTY: {
-        GET_ALL: `/user/faculties`,
+        GET: `/user/faculties`,
+        ADD: `/user/faculties`,
       },
       STUDENT: {
-        GET_ALL: `/user/students`,
+        GET: `/user/students`,
+        ADD: `/user/students`,
       },
     },
   },
