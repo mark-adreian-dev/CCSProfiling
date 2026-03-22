@@ -4,8 +4,8 @@ export const StudentProfileSchema = z
   .object({
     id: z.number(),
     student_no: z.string(),
-    course: z.string().nullable(),
-    year_level: z.number().nullable(),
+    academic_status: z.string().nullable(),
+    academic_year: z.number().nullable(),
   })
   .optional();
 

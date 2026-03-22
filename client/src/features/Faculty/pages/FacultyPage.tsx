@@ -1,20 +1,23 @@
 import type { User } from "@/core/domain/entity/user.entity";
 import { OrderBy } from "@/core/enums/order.enum";
 import { useGetFacultyProfilesQuery } from "@/core/hooks/user.hooks";
-import { FacultyListingColumn } from "@/core/presentation/columns/faculty-listing.column";
+import { useFacultyListingColumns } from "@/core/presentation/columns/faculty-listing.column";
 import PaginatedTable from "@/core/presentation/components/custom/PaginatedTable/PaginatedTable";
 import type { PaginationParams } from "@/core/utils/types/pagination-params.types";
 import { useMemo, useState } from "react";
 import { Label } from "@/core/presentation/components/base/ui/label";
-import { useForm } from "react-hook-form";
+import FacultyForm from "../components/FacultyForm";
+import { Button } from "@/core/presentation/components/base/ui/button";
+import { UserPlus2 } from "lucide-react";
+import React from "react";
 
 export default function FacultyPage() {
-  const column = FacultyListingColumn;
+  const { column } = useFacultyListingColumns();
   const [tableParams, setTableParams] = useState<PaginationParams<User>>({
     page: 1,
     pageSize: 10,
     search: "",
-    order: OrderBy.ASCENDING,
+    order: OrderBy.DESCENDING,
     sortBy: "created_at",
   });
 
@@ -54,9 +57,19 @@ export default function FacultyPage() {
         navigation={PaginatedNavigation}
         isLoading={isPending}
         paginationMetaData={PaginationMetaData}
+        form={<FacultyForm FormTrigger={FormTrigger} />}
         tableSearchControls
         paginationControls
       />
     </div>
   );
 }
+
+const FormTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>((props, ref) => {
+  return (
+    <Button {...props} ref={ref} variant="default">
+      <UserPlus2 />
+      Add Faculty
+    </Button>
+  );
+});

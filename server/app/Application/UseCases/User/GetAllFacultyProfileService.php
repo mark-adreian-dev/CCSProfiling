@@ -73,6 +73,7 @@ class GetAllFacultyProfileService
                 middle_name: $user->middle_name,
                 last_name: $user->last_name,
                 name_suffix: $user->name_suffix,
+                age: $user->age,
                 date_of_birth: $user->date_of_birth,
                 sex: $user->sex,
                 contact_number: $user->contact_number,

@@ -11,10 +11,12 @@ interface UserRepositoryInterface
     public function findAuthenticatedUser(): ?UserEntity;
 
     public function unAuthenticateUser();
+    public function findFacultyByID(int $id): ?UserEntity;
 
     public function findAllStudentProfiles(): Builder;
     public function findAllFacultyProfiles(): Builder;
     public function findAllFacultyProfilesById(string $employee_no): Builder;
+    public function updateFaculty(int $id, array $data): UserEntity;
 
     public function createFacultyUser(UserEntity $userEntity, array $data): UserEntity;
     public function createAdminUser(UserEntity $userEntity): UserEntity;

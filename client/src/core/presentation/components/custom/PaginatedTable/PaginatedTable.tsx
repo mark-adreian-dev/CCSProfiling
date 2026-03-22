@@ -29,6 +29,7 @@ interface PaginatedTableProps<TData extends { id: number }> {
   tableSearchControls?: boolean;
   paginationControls?: boolean;
   sortableRows?: boolean;
+  form: React.ReactNode;
 }
 
 export default function PaginatedTable<TData extends { id: number }>({
@@ -42,6 +43,7 @@ export default function PaginatedTable<TData extends { id: number }>({
   paginationControls,
   isLoading,
   sortableRows,
+  form,
 }: PaginatedTableProps<TData>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -49,6 +51,8 @@ export default function PaginatedTable<TData extends { id: number }>({
     first_name: false,
     last_name: false,
     middle_name: false,
+    name_prefix: false,
+    name_suffix: false,
     created_at: false,
   });
 
@@ -127,9 +131,13 @@ export default function PaginatedTable<TData extends { id: number }>({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-4">
-        {tableSearchControls && <TableSearch table={table} placeholder="Find something add some keyword..." />}
-        <TableFilters table={table} onParamsChange={onParamsChange} params={params} />
+      <div className="flex items-start justify-between gap-4">
+        <div className="w-full flex items-center gap-4">
+          {tableSearchControls && <TableSearch table={table} placeholder="Find something add some keyword..." />}
+          <TableFilters table={table} onParamsChange={onParamsChange} params={params} />
+        </div>
+
+        {form}
       </div>
 
       <DataTable

@@ -13,7 +13,7 @@ const repository = new AuthRepository();
 const useCase = new AuthUseCase(repository);
 
 export const useLoginMutation = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const setLoginStatus = useAuthStore((state) => state.setLoginStatus);
   const setUser = useAuthStore((state) => state.setUser);
@@ -22,18 +22,16 @@ export const useLoginMutation = () => {
     mutationFn: (credentials: LoginRequest) => useCase.login(credentials),
     onSuccess: (data) => {
       queryClient.setQueryData(["auth-user"], data);
-      setUser(data.data)
+      setUser(data.data);
       setLoginStatus(true);
 
-      const role = data.data.role
+      const role = data.data.role;
 
       if (role !== Role.STUDENT) {
         navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.URL);
       } else {
-        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.URL
-        );
+        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.URL);
       }
- 
     },
     onError: (error: unknown) => {
       handleError(error, TOASTER_CONFIG.AUTH);
@@ -60,11 +58,10 @@ export const useLogoutMutation = () => {
       // Even if the logout API fails, we usually want to clear the local session
       clearUser();
       queryClient.clear();
-      navigate(ROUTER_CONFIG.AUTH.URL)
+      navigate(ROUTER_CONFIG.AUTH.URL);
     },
   });
 };
-
 
 export const useGetUserQuery = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -79,7 +76,7 @@ export const useGetUserQuery = () => {
     meta: {
       errorMessage: "Session expired. Please login again.",
       onAuthError: () => {
-        clearUser(); 
+        clearUser();
       },
     },
   });

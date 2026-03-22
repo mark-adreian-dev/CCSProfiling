@@ -11,9 +11,7 @@ import FacultyPage from "@/features/Faculty/pages/FacultyPage";
 // Lazy Loaded Layouts and Components
 const AuthLayout = lazy(() => import("@/features/Authentication/layout/AuthLayout"));
 const LoginForm = lazy(() => import("@/features/Authentication/components/LoginForm").then((module) => ({ default: module.LoginForm })));
-const DashboardLayout = lazy(() => import("../presentation/layout/DashboardLayout").then((module) => ({ default: module.DashboardLayout })));
-const FacultyLayout = lazy(() => import("../presentation/layout/FacultyLayout"));
-const StudentLayout = lazy(() => import("../presentation/layout/StudentLayout"));
+const AdminLayout = lazy(() => import("../presentation/layout/AdminLayout"));
 
 export const Router = () => {
   return (
@@ -35,18 +33,10 @@ export const Router = () => {
 
         {/* Authenticated Only Routes */}
         <Route element={<ProtectedRoutes />}>
-          <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.BASE} element={<DashboardLayout />}>
-            {/* FACULTY SECTION */}
-            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.BASE} element={<FacultyLayout />}>
-              <Route index element={<Navigate to={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.ROUTES.QUICK_FIND.BASE} replace />} />
-              <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.ROUTES.QUICK_FIND.BASE} element={<FacultyPage />} />
-            </Route>
-
-            {/* STUDENT SECTION */}
-            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.BASE} element={<StudentLayout />}>
-              <Route index element={<Navigate to={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.ROUTES.QUICK_FIND.BASE} replace />} />
-              <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.ROUTES.QUICK_FIND.BASE} element={<>Student</>} />
-            </Route>
+          <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.BASE} element={<AdminLayout />}>
+            {/* ADMIN SECTION */}
+            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.BASE} element={<FacultyPage />} />
+            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.BASE} element={<FacultyPage />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/login" replace />} />

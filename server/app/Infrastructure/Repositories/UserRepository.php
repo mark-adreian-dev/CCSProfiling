@@ -75,7 +75,7 @@ class UserRepository implements UserRepositoryInterface
             middle_name: $user->middle_name,
             last_name: $user->last_name,
             name_suffix: $user->name_suffix,
-
+            age: $user->age,
             date_of_birth: $user->date_of_birth,
 
             sex: $user->sex,
@@ -131,7 +131,7 @@ class UserRepository implements UserRepositoryInterface
             middle_name: $user->middle_name,
             last_name: $user->last_name,
             name_suffix: $user->name_suffix,
-
+            age: $user->age,
             date_of_birth: $user->date_of_birth,
 
             sex: $user->sex,
@@ -180,6 +180,103 @@ class UserRepository implements UserRepositoryInterface
                 RoleEnum::ADMIN->value,
             ]);
     }
+    public function findFacultyByID(int $id): ?UserEntity
+    {
+        // Fetch the user with the profile relationship
+        $user = User::with('facultyProfile')
+            ->whereNotIn('role', [
+                RoleEnum::STUDENT->value,
+                RoleEnum::ADMIN->value,
+            ])
+            ->find($id);
+
+        if (!$user) {
+            return null;
+        }
+
+        // Hydrate the FacultyProfileEntity if the relation exists
+        $facultyEntity = $user->facultyProfile
+            ? new FacultyProfileEntity(
+                id: $user->facultyProfile->id,
+                employee_no: $user->facultyProfile->employee_no,
+                expertise: $user->facultyProfile->expertise
+            )
+            : null;
+
+        // Map to the UserEntity (following your established structure)
+        return new UserEntity(
+            id: $user->id,
+            email: $user->email,
+            password: $user->password,
+            role: $user->role,
+            department_id: $user->department_id,
+            name_prefix: $user->name_prefix,
+            first_name: $user->first_name,
+            middle_name: $user->middle_name,
+            last_name: $user->last_name,
+            name_suffix: $user->name_suffix,
+            age: $user->age,
+            date_of_birth: $user->date_of_birth,
+            sex: $user->sex,
+            contact_number: $user->contact_number,
+            address: $user->address,
+            profile_picture: $user->profile_picture,
+            created_at: $user->created_at,
+            updated_at: $user->updated_at,
+            deleted_at: $user->deleted_at,
+            studentProfile: null, // This is a faculty-specific find
+            facultyProfile: $facultyEntity
+        );
+    }
+    public function updateFaculty(int $id, array $data): UserEntity
+    {
+        return DB::transaction(function () use ($id, $data) {
+            $user = User::findOrFail($id);
+
+            // Update User table (email, name, etc.)
+            $user->update(collect($data)->except(['expertise'])->toArray());
+
+            // Update Faculty Profile (expertise)
+            if (isset($data['expertise'])) {
+                $user->facultyProfile()->updateOrCreate(
+                    ['user_id' => $user->id],
+                    ['expertise' => $data['expertise']]
+                );
+            }
+
+            $facultyEntity = $user->facultyProfile
+                ? new FacultyProfileEntity(
+                    id: $user->facultyProfile->id,
+                    employee_no: $user->facultyProfile->employee_no,
+                    expertise: $user->facultyProfile->expertise
+                )
+                : null;
+
+            return new UserEntity(
+                id: $user->id,
+                email: $user->email,
+                password: $user->password,
+                role: $user->role,
+                department_id: $user->department_id,
+                name_prefix: $user->name_prefix,
+                first_name: $user->first_name,
+                middle_name: $user->middle_name,
+                last_name: $user->last_name,
+                name_suffix: $user->name_suffix,
+                age: $user->age,
+                date_of_birth: $user->date_of_birth,
+                sex: $user->sex,
+                contact_number: $user->contact_number,
+                address: $user->address,
+                profile_picture: $user->profile_picture,
+                created_at: $user->created_at,
+                updated_at: $user->updated_at,
+                deleted_at: $user->deleted_at,
+                studentProfile: null,
+                facultyProfile: $facultyEntity
+            );
+        });
+    }
 
     public function createAdminUser(UserEntity $userEntity): UserEntity
     {
@@ -209,16 +306,16 @@ class UserRepository implements UserRepositoryInterface
         // 3. Return the Entity to satisfy the Use Case type hint
         return $userEntity;
     }
-
     public function createFacultyUser(UserEntity $userEntity, array $data): UserEntity
     {
         return DB::transaction(function () use ($userEntity, $data) {
             // 1. Create the User record
             $user = User::create([
                 'email' => $userEntity->email,
-                'role' => $userEntity->role,
+                'role' => RoleEnum::FACULTY->value,
                 'password' => Hash::make('dangal_password'),
                 'department_id' => 1,
+                'age' => $userEntity->age,
                 'name_prefix' => $userEntity->name_prefix,
                 'first_name' => $userEntity->first_name,
                 'middle_name' => $userEntity->middle_name,
@@ -244,6 +341,7 @@ class UserRepository implements UserRepositoryInterface
 
             // 4. Hydrate Entity for response
             $userEntity->id = $user->id;
+            $userEntity->department_id = $user->department_id;
             $userEntity->created_at = $user->created_at;
             $userEntity->facultyProfile = new FacultyProfileEntity(
                 id: $profileModel->id,
@@ -254,7 +352,6 @@ class UserRepository implements UserRepositoryInterface
             return $userEntity;
         });
     }
-
     public function createStudentUser(UserEntity $userEntity, array $data): UserEntity
     {
         return DB::transaction(function () use ($userEntity) {

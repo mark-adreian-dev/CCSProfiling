@@ -44,8 +44,8 @@ export default function TableFilters<TData extends { id: number }>({ table, para
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant={"outline"} className="h-9 flex items-center gap-3">
-          <ListFilter className="h-4 w-4" />
+        <Button variant={"outline"}>
+          <ListFilter />
           <p className="text-sm font-medium">Sort Options</p>
         </Button>
       </DropdownMenuTrigger>

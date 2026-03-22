@@ -27,11 +27,12 @@ class UsersSeeder extends Seeder
                 'contact_number' => '09123456789',
                 'address' => 'University Campus',
                 'date_of_birth' => '1990-01-01',
+                'age' => 32
             ], $userData));
         }
 
         // 2. Generate 2,000 random accounts
         // This will take a few seconds but is way faster than manual entry
-        User::factory()->count(2000)->create();
+        User::factory()->count(100)->create();
     }
 }

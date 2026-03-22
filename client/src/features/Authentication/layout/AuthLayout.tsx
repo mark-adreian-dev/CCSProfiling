@@ -47,11 +47,7 @@ export default function AuthLayout() {
         </div>
       </div>
       <div className="relative hidden bg-muted lg:block">
-        <img
-          src={CCSBackground}
-          alt="Image"
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
+        <img src={CCSBackground} alt="Image" className="absolute inset-0 h-full w-full object-cover object-center" />
       </div>
     </div>
   );

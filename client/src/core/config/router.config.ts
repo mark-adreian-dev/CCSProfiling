@@ -8,25 +8,19 @@ export const ROUTER_CONFIG = {
       BASE: "dashboard",
       URL: "/dashboard",
       ROUTES: {
+        QUICK_FIND: {
+          BASE: "quick-find",
+          URL: "/dashboard/quick-find",
+        },
         STUDENT: {
-          BASE: "student",
+          BASE: "students",
           URL: "/dashboard/student",
-          ROUTES: {
-            QUICK_FIND: {
-              BASE: "quick-find",
-              URL: "/dashboard/student/quick-find",
-            },
-          },
+          SUB_ROUTES: {},
         },
         FACULTY: {
           BASE: "faculty",
           URL: "/dashboard/faculty",
-          ROUTES: {
-            QUICK_FIND: {
-              BASE: "quick-find",
-              URL: "/dashboard/faculty/quick-find",
-            },
-          },
+          SUB_ROUTES: {},
         },
       },
     },
