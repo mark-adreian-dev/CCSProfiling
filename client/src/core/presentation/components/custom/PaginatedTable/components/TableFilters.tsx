@@ -96,7 +96,7 @@ export default function TableFilters<TData extends { id: number }>({ table, para
           ))}
         </RadioGroup>
 
-        <Button variant="secondary" onClick={handleReset}>
+        <Button variant="secondary" onClick={handleReset} className="w-full hover:bg-primary">
           <FilterX />
           Reset Filters
         </Button>

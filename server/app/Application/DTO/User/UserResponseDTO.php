@@ -31,21 +31,64 @@ class UserResponseDTO
         $response->address = $user->address;
         $response->profile_picture = $user->profile_picture;
         $response->created_at = $user->created_at;
+        $response->interests = $user->interests;
 
-        if ($user->studentProfile) {
-            $response->studentProfile = (object) [
-                'id' => $user->studentProfile->id,
-                'student_no' => $user->studentProfile->student_no,
-                'academic_year' => $user->studentProfile->academic_year,
-                'academic_status' => $user->studentProfile->academic_status,
-            ];
+        // Affiliations
+        if ($user->affiliations) {
+            $response->affiliations = array_map(function ($affiliation) {
+                return (object) [
+                    'id' => $affiliation->id,
+                    'user_id' => $affiliation->user_id,
+                    'role' => $affiliation->role,
+                    'affiliation_name' => $affiliation->affiliation_name,
+                    'description' => $affiliation->description,
+                    'date_start' => $affiliation->date_start,
+                    'date_end' => $affiliation->date_end,
+                    'created_at' => $affiliation->created_at,
+                    'updated_at' => $affiliation->updated_at,
+                    'deleted_at' => $affiliation->deleted_at,
+                ];
+            }, $user->affiliations);
+        } else {
+            $response->affiliations = [];
         }
 
+        // Student Profile
+        if ($user->studentProfile) {
+            $student = $user->studentProfile;
+
+            $studentData = new stdClass();
+            $studentData->id = $student->id;
+            $studentData->student_no = $student->student_no;
+            $studentData->academic_year = $student->academic_year;
+            $studentData->academic_status = $student->academic_status;
+
+            // Include Program
+            if ($student->program) {
+                $program = $student->program;
+                $studentData->program = (object) [
+                    'id' => $program->id,
+                    'name' => $program->name,
+                    'code' => $program->code,
+                    'department_id' => $program->department_id,
+                    'description' => $program->description,
+                    'created_at' => $program->created_at,
+                    'department' => $program->department ?? null,
+                ];
+            } else {
+                $studentData->program = null;
+            }
+
+            $response->studentProfile = $studentData;
+        }
+
+        // Faculty Profile
         if ($user->facultyProfile) {
+            $faculty = $user->facultyProfile;
             $response->facultyProfile = (object) [
-                'id' => $user->facultyProfile->id,
-                'employee_no' => $user->facultyProfile->employee_no,
-                'expertise' => $user->facultyProfile->expertise,
+                'id' => $faculty->id,
+                'employee_no' => $faculty->employee_no,
+                'expertise' => $faculty->expertise,
             ];
         }
 

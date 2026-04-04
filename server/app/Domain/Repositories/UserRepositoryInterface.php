@@ -22,4 +22,7 @@ interface UserRepositoryInterface
     public function createAdminUser(UserEntity $userEntity): UserEntity;
 
     public function createStudentUser(UserEntity $userEntity, array $data): UserEntity;
+    public function updateStudent(int $id, array $data): UserEntity;
+    public function findStudentByID(int $id): ?UserEntity;
+
 }

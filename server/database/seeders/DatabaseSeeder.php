@@ -8,6 +8,8 @@ use Database\Seeders\ProgramsSeeder;
 use Database\Seeders\UsersSeeder;
 use Database\Seeders\StudentProfilesSeeder;
 use Database\Seeders\FacultyProfilesSeeder;
+use Database\Seeders\InterestsSeeder;
+use Database\Seeders\UserInterestsSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +21,10 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,                // create 1 user per role
             StudentProfilesSeeder::class,      // create StudentProfile/FacultyProfile
             FacultyProfilesSeeder::class,      // create StudentProfile/FacultyProfile
+
+            InterestsSeeder::class,
+            UserInterestsSeeder::class,
+            AffiliationSeeder::class,
         ]);
     }
 }

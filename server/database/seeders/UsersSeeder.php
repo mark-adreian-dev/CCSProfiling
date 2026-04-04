@@ -17,6 +17,10 @@ class UsersSeeder extends Seeder
             ['email' => 'chair1@example.com', 'role' => 'chair', 'first_name' => 'Chair', 'last_name' => 'User'],
             ['email' => 'faculty1@example.com', 'role' => 'faculty', 'first_name' => 'Faculty', 'last_name' => 'User'],
             ['email' => 'student1@example.com', 'role' => 'student', 'first_name' => 'Student', 'last_name' => 'User'],
+            // Additional Student Entries
+            ['email' => 'student2@example.com', 'role' => 'student', 'first_name' => 'Alice', 'last_name' => 'Smith'],
+            ['email' => 'student3@example.com', 'role' => 'student', 'first_name' => 'Bob', 'last_name' => 'Johnson'],
+            ['email' => 'student4@example.com', 'role' => 'student', 'first_name' => 'Charlie', 'last_name' => 'Davis'],
         ];
 
         foreach ($fixedUsers as $userData) {

@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Domain\Entities;
+
 use Illuminate\Support\Facades\Hash;
+
 class UserEntity
 {
     public function __construct(
@@ -21,7 +23,6 @@ class UserEntity
         public ?string $age = null,
 
         public string $date_of_birth,
-
         public string $sex,
 
         public ?string $contact_number = null,
@@ -31,13 +32,19 @@ class UserEntity
         public ?string $created_at = null,
         public ?string $updated_at = null,
         public ?string $deleted_at = null,
+
         public ?StudentProfileEntity $studentProfile = null,
-        public ?FacultyProfileEntity $facultyProfile = null
+        public ?FacultyProfileEntity $facultyProfile = null,
+
+        public ?array $interests = null,
+
+        // ✅ ADD THIS
+        public ?array $affiliations = null
     ) {
     }
 
     public function checkPassword(string $plainPassword): bool
     {
-        return Hash::check( $plainPassword, $this->password);
+        return Hash::check($plainPassword, $this->password);
     }
 }

@@ -53,6 +53,26 @@ class UpdateUserValidation extends FormRequest
                 'string',
                 'max:255'
             ],
+
+            // Student Profile Specific Validation
+            'program_id' => [
+                'sometimes',
+                'nullable',
+                'integer',
+                'exists:programs,id'
+            ],
+            'academic_year' => [
+                'sometimes',
+                'nullable',
+                'integer',
+                'in:1,2,3,4,5'
+            ],
+            'academic_status' => [
+                'sometimes',
+                'nullable',
+                'string',
+                'in:Regular,Irregular'
+            ],
         ];
     }
 }

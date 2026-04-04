@@ -7,13 +7,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class FailedResource extends JsonResource
 {
-
     public function toArray(Request $request): array
     {
         return [
-            "status" => $this['status'],
-            "message" => $this['message'],
-            'errors' => $this->when(isset($this->resource['errors']), $this->resource['errors']),
+            "status" => $this->resource['status'] ?? 400,
+            "message" => $this->resource['message'] ?? 'An error occurred',
+            'errors' => $this->resource['errors'] ?? null,
         ];
     }
 }

@@ -122,7 +122,7 @@ export default function FormImagePicker<T extends FieldValues>({
           >
             {preview ? (
               <>
-                <img src={preview} className="h-full w-full object-cover" alt="Preview" />
+                <img src={preview} className="h-full w-full max-w-[300px] max-h-[300px] object-cover" alt="Preview" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                   <Button
                     type="button"
@@ -162,10 +162,10 @@ export default function FormImagePicker<T extends FieldValues>({
                 <DialogDescription className="text-muted-foreground text-sm">Drag to reposition and resize the crop area.</DialogDescription>
               </DialogHeader>
 
-              <div className="w-full bg-black rounded-2xl aspect-square flex items-center justify-center overflow-hidden">
+              <div className="w-full bg-black rounded-2xl flex items-center justify-center overflow-hidden">
                 {tempImage && (
                   <ReactCrop crop={crop} onChange={(c) => setCrop(c)} aspect={aspectRatio}>
-                    <img ref={imgRef} src={tempImage} onLoad={onImageLoad} className="max-h-100 object-contain" />
+                    <img ref={imgRef} src={tempImage} onLoad={onImageLoad} className="object-contain" />
                   </ReactCrop>
                 )}
               </div>

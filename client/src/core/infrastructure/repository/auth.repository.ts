@@ -10,24 +10,24 @@ import api from "@/core/utils/axios/axios-instance";
 
 export class AuthRepository implements AuthRepositoryInterface {
   async fetchCSRFToken(): Promise<boolean> {
-    await api.get(API_CONFIG.enpoints.AUTH.CSRF_TOKEN, {
+    await api.get(API_CONFIG.endpoints.AUTH.CSRF, {
       baseURL: API_CONFIG.baseUrlDomain,
     });
     return true;
   }
 
   async login(credentials: LoginRequest): Promise<AuthSuccessDTO> {
-    const { data } = await api.post(API_CONFIG.enpoints.AUTH.LOGIN, credentials);
+    const { data } = await api.post(API_CONFIG.endpoints.AUTH.LOGIN, credentials);
     return AuthSuccessDTOSchema.parse(data);
   }
 
   async logout(): Promise<AuthSuccessDTO> {
-    const { data } = await api.post(API_CONFIG.enpoints.AUTH.LOGOUT);
+    const { data } = await api.post(API_CONFIG.endpoints.AUTH.LOGOUT);
     return AuthSuccessDTOSchema.parse(data);
   }
 
   async getUser(): Promise<UserSuccessDTO> {
-    const { data } = await api.get(API_CONFIG.enpoints.AUTH.USER);
+    const { data } = await api.get(API_CONFIG.endpoints.AUTH.USER);
     return UserSuccessDTOSchema.parse(data);
   }
 }

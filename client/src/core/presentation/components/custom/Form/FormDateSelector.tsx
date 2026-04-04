@@ -15,6 +15,7 @@ export type FormDateSelectorProps<T extends FieldValues> = {
   FieldIcon?: LucideIcon;
   required?: boolean;
   className?: string;
+  allowFutureDates?: boolean;
 };
 
 export default function FormDateSelector<T extends FieldValues>({
@@ -25,6 +26,7 @@ export default function FormDateSelector<T extends FieldValues>({
   FieldIcon,
   required,
   className,
+  allowFutureDates,
 }: FormDateSelectorProps<T>) {
   const [open, setOpen] = useState(false);
 
@@ -54,7 +56,7 @@ export default function FormDateSelector<T extends FieldValues>({
                   <Button
                     variant="outline"
                     id={field.name}
-                    className={`w-full justify-between font-normal hover:bg-background focus:ring focus:ring-primary/50 ${
+                    className={`w-full justify-between font-normal bg-input/40 focus:ring focus:ring-primary/50 ${
                       !dateValue && "text-muted-foreground"
                     } ${fieldState.error && "border border-destructive!"}`}
                   >
@@ -71,7 +73,7 @@ export default function FormDateSelector<T extends FieldValues>({
                       field.onChange(date);
                       setOpen(false);
                     }}
-                    disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                    disabled={(date) => date < new Date("1900-01-01") || (!allowFutureDates && date > new Date())}
                   />
                 </PopoverContent>
               </Popover>

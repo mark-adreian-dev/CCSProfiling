@@ -1,3 +1,5 @@
+import { ROUTER_CONFIG } from "@/core/config/router.config";
+import { Role } from "@/core/enums/roles.enums";
 import { useLogoutMutation } from "@/core/hooks/auth.hooks";
 import { Avatar, AvatarFallback, AvatarImage } from "@/core/presentation/components/base/ui/avatar";
 import {
@@ -9,7 +11,9 @@ import {
   DropdownMenuTrigger,
 } from "@/core/presentation/components/base/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/core/presentation/components/base/ui/sidebar";
-import { EllipsisVerticalIcon, LogOutIcon } from "lucide-react";
+import { useAuthStore } from "@/core/store/auth.store";
+import { EllipsisVerticalIcon, LogOutIcon, UserCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function NavUser({
   user,
@@ -17,12 +21,13 @@ export function NavUser({
   user: {
     name: string;
     email: string;
-    avatar: string;
+    avatar?: string;
   };
 }) {
   const { isMobile } = useSidebar();
   const { mutateAsync: logout, isPending } = useLogoutMutation();
-
+  const userData = useAuthStore((state) => state.user);
+  const Initials = `${userData?.first_name[0].toUpperCase()}${userData?.last_name[0].toUpperCase()}`;
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -31,7 +36,7 @@ export function NavUser({
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">{Initials}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -59,6 +64,18 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+            {userData?.role !== Role.STUDENT && (
+              <DropdownMenuItem className="gap-2">
+                <Link
+                  className="flex items-center gap-2"
+                  to={`${ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.FACULTY.SUB_ROUTES.PROFILE.URL}/${userData?.id}`}
+                >
+                  <UserCircle className="h-4 w-4" />
+                  <span>View profile</span>
+                </Link>
+              </DropdownMenuItem>
+            )}
+
             <DropdownMenuItem
               disabled={isPending}
               onClick={() => logout()}

@@ -37,17 +37,13 @@ class StoreUserValidation extends FormRequest
             ],
 
             // Student Profile Specific Validation
-            'student_no' => [
-                'required_if:role,student',
-                'unique:student_profiles,student_no'
-            ],
             'program_id' => [
                 'required_if:role,student',
                 'exists:programs,id'
             ],
             'academic_year' => [
                 'required_if:role,student',
-                'in:1,2,3,4'
+                'in:1,2,3,4,5'
             ],
             'academic_status' => [
                 'required_if:role,student',
@@ -55,7 +51,6 @@ class StoreUserValidation extends FormRequest
             ],
 
             // Faculty Profile Specific Validation
-            // employee_no is REMOVED from here because it is auto-generated in the Repository
             'expertise' => [
                 'nullable',
                 'string',

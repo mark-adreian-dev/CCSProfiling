@@ -63,4 +63,18 @@ class User extends Authenticatable
     {
         return $this->hasOne(FacultyProfile::class);
     }
+
+    public function interests()
+    {
+        return $this->belongsToMany(Interest::class, 'user_interests')
+            ->using(UserInterest::class)
+            ->withPivot(['started_at', 'ended_at', 'deleted_at'])
+            ->withTimestamps()
+            ->wherePivotNull('deleted_at');
+    }
+
+    public function affiliations()
+    {
+        return $this->hasMany(Affiliation::class);
+    }
 }

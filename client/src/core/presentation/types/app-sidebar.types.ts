@@ -26,7 +26,7 @@ export interface AppSideBar {
   user: {
     name: string;
     email: string;
-    avatar: string; // URL or imported image path
+    avatar?: string; // URL or imported image path
   };
   navMain: NavItem[];
   navClouds: NavItem[];

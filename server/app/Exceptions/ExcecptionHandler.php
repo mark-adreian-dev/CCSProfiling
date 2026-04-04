@@ -22,19 +22,21 @@ class ExcecptionHandler
         ]))->response()->setStatusCode(422);
     }
 
-    public function unauthenticatedError()
+    public function unauthenticatedError(array $errors)
     {
         return (new FailedResource([
             'status' => 401,
             'message' => 'Unauthorized',
+            'errors' => $errors, // Pass the detailed errors here
         ]))->response()->setStatusCode(401);
     }
 
-    public function csrfTokenMismatchError()
+    public function csrfTokenMismatchError(array $errors)
     {
         return (new FailedResource([
             'status' => 419,
-            'message' => 'Invalid or missing CSRF token.'
+            'message' => 'Invalid or missing CSRF token.',
+            'errors' => $errors, // Pass the detailed errors here
         ]))->response()->setStatusCode(419);
     }
 }

@@ -2,26 +2,30 @@
 
 namespace App\Presentation\Requests;
 
-use App\Domain\Enums\OrderEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
-use App\Domain\Enums\UserSortBy;
 
 class PaginationValidation extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * The Enum class for sortBy validation.
+     * Default to null, will be set dynamically in each controller if needed
      */
+    protected ?string $sortByEnum = null;
+
+    /**
+     * Allow controllers to set the enum dynamically
+     */
+    public function setSortByEnum(string $enumClass): self
+    {
+        $this->sortByEnum = $enumClass;
+        return $this;
+    }
+
     public function authorize(): bool
     {
         return true;
     }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
 
     public function rules(): array
     {
@@ -29,8 +33,8 @@ class PaginationValidation extends FormRequest
             'page' => ['integer', 'min:1'],
             'pageSize' => ['integer', 'min:1', 'max:100'],
             'search' => ['nullable', 'string', 'max:100'],
-            'sortBy' => ['nullable', new Enum(UserSortBy::class)],
-            'order' => ['nullable', new Enum(OrderEnum::class)],
+            'sortBy' => $this->sortByEnum ? ['nullable', new Enum($this->sortByEnum)] : ['nullable'],
+            'order' => ['nullable', new Enum(\App\Domain\Enums\OrderEnum::class)],
         ];
     }
 }

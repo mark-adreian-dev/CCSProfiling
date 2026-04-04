@@ -10,6 +10,7 @@ class StudentProfileEntity
         public int $program_id,
         public int $academic_year,
         public string $academic_status,
+        public ?ProgramEntity $program = null,
     ) {
     }
 }

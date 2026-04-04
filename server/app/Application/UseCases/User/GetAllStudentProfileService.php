@@ -42,13 +42,10 @@ class GetAllStudentProfileService
             });
         }
 
-        // 3. Apply Sorting and Paginate
         $query->orderBy($sortBy->value, $order->value);
 
-        // This executes the database query
         $paginated = $query->paginate(perPage: $pageSize, page: $page);
 
-        // 4. Complete Mapping Logic
         return $paginated->through(function (User $user) {
             return new UserEntity(
                 id: $user->id,
@@ -61,6 +58,7 @@ class GetAllStudentProfileService
                 middle_name: $user->middle_name,
                 last_name: $user->last_name,
                 name_suffix: $user->name_suffix,
+                age: $user->date_of_birth,
                 date_of_birth: $user->date_of_birth,
                 sex: $user->sex,
                 contact_number: $user->contact_number,
@@ -69,7 +67,7 @@ class GetAllStudentProfileService
                 created_at: $user->created_at,
                 updated_at: $user->updated_at,
                 deleted_at: $user->deleted_at,
-                // Map the nested Student Profile Relation
+
                 studentProfile: $user->studentProfile ? new StudentProfileEntity(
                     id: $user->studentProfile->id,
                     student_no: $user->studentProfile->student_no,
@@ -78,7 +76,6 @@ class GetAllStudentProfileService
                     academic_status: $user->studentProfile->academic_status
                 ) : null,
             );
-
         });
     }
 }

@@ -45,9 +45,8 @@ export default function FormTextInput<T extends FieldValues>({ control, name, la
               {...field}
               {...inputProps}
               id={field.name}
-              value={field.value ?? ""}
               aria-invalid={fieldState.invalid}
-              className={`w-full pr-10 ${fieldState.error && "border-destructive!"}`}
+              className={`w-full pr-10 ${fieldState.error && "border-destructive!"} hover:bg-input!`}
               type={isPasswordField ? (isPasswordVisible ? "text" : "password") : inputProps.type}
             />
 

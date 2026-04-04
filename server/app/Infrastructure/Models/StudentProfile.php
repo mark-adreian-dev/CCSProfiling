@@ -14,8 +14,14 @@ class StudentProfile extends Model
     protected $fillable = [
         'user_id',
         'program_id',
+        'student_no',
         'academic_year',
         'academic_status'
+    ];
+
+    protected $casts = [
+        'program_id' => 'integer',
+        'academic_year' => 'integer',
     ];
 
     /*

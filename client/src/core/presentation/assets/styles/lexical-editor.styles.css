@@ -1,0 +1,71 @@
+/* Target the internal table-wrapper Radix creates */
+[data-radix-scroll-area-viewport] > div {
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+/* Ensure the Lexical editor area expands to fill this flex container */
+.lexical-wrapper-fix {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Base styles for both states */
+.editor__listItemUnchecked,
+.editor__listItemChecked {
+  position: relative !important;
+  list-style-type: none !important;
+  padding-left: 28px !important; 
+  margin-bottom: 8px;
+  cursor: pointer;
+  display: block !important;
+  min-height: 24px;
+  line-height: 1.5;
+}
+
+/* THE BOX - Now using left: 4px so it stays inside the li */
+.editor__listItemUnchecked::before,
+.editor__listItemChecked::before {
+  content: "" !important;
+  display: block !important;
+  width: 18px !important;
+  height: 18px !important;
+  position: absolute !important;
+  top: 2px;
+  left: 4px; /* CHANGED: Moving it inside the padding */
+  border: 1px solid var(--primary) !important;
+  border-width: 1px !important;
+  border-radius: 4px;
+  background-color: hsl(var(--background)) !important;
+}
+
+/* THE CHECKED STATE */
+.editor__listItemChecked::before {
+  background-color: var(--primary) !important;
+  border: 1px solid var(--primary) !important;
+  border-width: 1px !important;
+
+}
+
+/* THE CHECKMARK */
+.editor__listItemChecked::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 4px;
+  left: 10px; 
+  width: 5px;
+  height: 10px;
+  border: 1px solid var(--primary-foreground) !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(45deg);
+  z-index: 11;
+  display: block !important;
+}
+
+
+.list-disc::marker {
+  margin-left: 10px;
+}

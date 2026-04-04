@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'api/v1/auth/*',
             'api/v1/user/*',
+            'api/v1/program/*',
+            'api/v1/interest/*',
+            'api/v1/affiliation/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
@@ -30,10 +33,10 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (AuthenticationException $e) {
-            return new ExcecptionHandler()->unauthenticatedError();
+            return new ExcecptionHandler()->unauthenticatedError([]);
         });
 
         $exceptions->render(function (TokenMismatchException $e) {
-            return new ExcecptionHandler()->csrfTokenMismatchError();
+            return new ExcecptionHandler()->csrfTokenMismatchError([]);
         });
     })->create();

@@ -1,23 +1,32 @@
+const BASE = import.meta.env.VITE_API_URL;
+const DOMAIN = import.meta.env.VITE_API_URL_DOMAIN;
+
 export const API_CONFIG = {
-  baseApiUrl: import.meta.env.VITE_API_URL,
-  baseUrlDomain: import.meta.env.VITE_API_URL_DOMAIN,
-  baseUrlForImage: `${import.meta.env.VITE_API_URL_DOMAIN}/storage/`,
-  enpoints: {
+  baseApiUrl: BASE,
+  baseUrlDomain: DOMAIN,
+  baseUrlForImage: `${DOMAIN}/storage`,
+
+  endpoints: {
     AUTH: {
       LOGIN: `/login`,
       LOGOUT: `/auth/logout`,
       USER: `/auth/user`,
-      CSRF_TOKEN: `/sanctum/csrf-cookie`,
+      CSRF: `/sanctum/csrf-cookie`,
     },
+
     USER: {
-      FACULTY: {
-        GET: `/user/faculties`,
-        ADD: `/user/faculties`,
-      },
-      STUDENT: {
-        GET: `/user/students`,
-        ADD: `/user/students`,
-      },
+      FACULTIES: `/user/faculties`,
+      STUDENTS: `/user/students`,
     },
+
+    PROGRAMS: `/program/programs`,
+
+    INTEREST: {
+      BASE: `/interest/interests`,
+      ADD_USER: `/interest/user-interests/add`,
+      REMOVE_USER: `/interest/user-interests/remove`,
+    },
+
+    AFFILIATION: `/affiliation/affiliations`,
   },
 };

@@ -17,6 +17,7 @@ import TableSearch from "./components/TableSearch";
 import type { PaginationParams } from "@/core/utils/types/pagination-params.types";
 import type { OrderBy } from "@/core/enums/order.enum";
 import TableFilters from "./components/TableFilters";
+import BadgePreview from "./components/BadgePreview";
 
 interface PaginatedTableProps<TData extends { id: number }> {
   data: TData[];
@@ -30,6 +31,7 @@ interface PaginatedTableProps<TData extends { id: number }> {
   paginationControls?: boolean;
   sortableRows?: boolean;
   form: React.ReactNode;
+  table_preview: "table" | "cards" | "badge";
 }
 
 export default function PaginatedTable<TData extends { id: number }>({
@@ -39,6 +41,7 @@ export default function PaginatedTable<TData extends { id: number }>({
   paginationMetaData,
   params,
   onParamsChange,
+  table_preview,
   tableSearchControls,
   paginationControls,
   isLoading,
@@ -132,7 +135,7 @@ export default function PaginatedTable<TData extends { id: number }>({
   return (
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-4">
-        <div className="w-full flex items-center gap-4">
+        <div className="w-full flex flex-col items-start lg:flex-row gap-4">
           {tableSearchControls && <TableSearch table={table} placeholder="Find something add some keyword..." />}
           <TableFilters table={table} onParamsChange={onParamsChange} params={params} />
         </div>
@@ -140,14 +143,17 @@ export default function PaginatedTable<TData extends { id: number }>({
         {form}
       </div>
 
-      <DataTable
-        table={table}
-        content={data}
-        columns={columns}
-        isLoading={isLoading}
-        sortableRows={sortableRows}
-        pageSize={paginationMetaData.per_page}
-      />
+      {table_preview === "table" && (
+        <DataTable
+          table={table}
+          content={data}
+          columns={columns}
+          isLoading={isLoading}
+          sortableRows={sortableRows}
+          pageSize={paginationMetaData.per_page}
+        />
+      )}
+      {table_preview === "badge" && <BadgePreview table={table} isLoading={isLoading} />}
       {paginationControls && (
         <PaginationControls
           table={table}
@@ -157,9 +163,6 @@ export default function PaginatedTable<TData extends { id: number }>({
           hasNext={navigation.has_more_pages}
           hasPrev={navigation.has_prev_page}
           //Pagination meta data
-          total={paginationMetaData.total}
-          items_count={paginationMetaData.items_count}
-          per_page={paginationMetaData.per_page}
           current_page={paginationMetaData.current_page}
           total_pages={paginationMetaData.total_pages}
         />

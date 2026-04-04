@@ -5,22 +5,49 @@ export const ROUTER_CONFIG = {
   },
   PROTECTED: {
     DASHBOARD: {
-      BASE: "dashboard",
-      URL: "/dashboard",
       ROUTES: {
-        QUICK_FIND: {
-          BASE: "quick-find",
-          URL: "/dashboard/quick-find",
+        ADMIN: {
+          BASE: "admin/dashboard",
+          QUICK_FIND: {
+            BASE: "quick-find",
+            URL: "/admin/dashboard/quick-find",
+          },
+          STUDENTS: {
+            BASE: "students",
+            URL: "/admin/dashboard/students",
+            SUB_ROUTES: {
+              PROFILE: {
+                BASE: "profile",
+                URL: "/admin/dashboard/students/profile",
+              },
+            },
+          },
+          FACULTY: {
+            BASE: "faculty",
+            URL: "/admin/dashboard/faculty",
+            SUB_ROUTES: {
+              PROFILE: {
+                BASE: "profile",
+                URL: "/admin/dashboard/faculty/profile",
+              },
+            },
+          },
+          INTEREST: {
+            BASE: "interests",
+            URL: "/admin/dashboard/interests",
+            SUB_ROUTES: {},
+          },
         },
         STUDENT: {
-          BASE: "students",
-          URL: "/dashboard/student",
-          SUB_ROUTES: {},
-        },
-        FACULTY: {
-          BASE: "faculty",
-          URL: "/dashboard/faculty",
-          SUB_ROUTES: {},
+          BASE: "student/dashboard",
+          QUICK_FIND: {
+            BASE: "quick-find",
+            URL: "/student/dashboard/quick-find",
+          },
+          PROFILE: {
+            BASE: "profile",
+            URL: "/student/dashboard/profile",
+          },
         },
       },
     },

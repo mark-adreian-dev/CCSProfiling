@@ -3,6 +3,8 @@ import { Sex } from "../../enums/sex.enum";
 import { Role } from "../../enums/roles.enums";
 import { StudentProfileSchema } from "./student-profile.entity";
 import { FacultyProfileSchema } from "./faculty-profile.entity";
+import { InterestSchema } from "./interest.entity";
+import { AffiliationSchema } from "./affiliation.entity";
 
 export const UserSchema = z.object({
   id: z.number(),
@@ -20,8 +22,10 @@ export const UserSchema = z.object({
   address: z.string(),
   profile_picture: z.string().nullable(),
   created_at: z.string(),
-  studentProfile: StudentProfileSchema,
-  facultyProfile: FacultyProfileSchema,
+  interests: z.array(InterestSchema).optional().nullable(),
+  studentProfile: StudentProfileSchema.optional(),
+  facultyProfile: FacultyProfileSchema.optional(),
+  affiliations: z.array(AffiliationSchema),
 });
 
 export type User = z.infer<typeof UserSchema>;

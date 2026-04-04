@@ -12,6 +12,7 @@ interface FormProps<T extends FieldValues> {
   formTitle?: string;
   formDescription?: string;
   open?: boolean;
+  formID: string;
   onOpenChange?: (open: boolean) => void;
 }
 
@@ -23,6 +24,7 @@ export default function Form<T extends FieldValues>({
   children,
   trigger,
   className,
+  formID,
   open,
   onOpenChange,
 }: FormProps<T>) {
@@ -40,8 +42,8 @@ export default function Form<T extends FieldValues>({
         </SheetHeader>
 
         <ScrollArea>
-          <form id="faculty-form" onSubmit={form.handleSubmit(onSubmit)} noValidate className="flex-1 space-y-4 py-4">
-            <div className="flex flex-col gap-6 pb-30 pr-4">{children}</div>
+          <form id={formID} onSubmit={form.handleSubmit(onSubmit)} noValidate className="flex-1 space-y-4 py-4">
+            <div className="flex flex-col gap-6 pr-4 pl-1  pb-24">{children}</div>
           </form>
         </ScrollArea>
       </SheetContent>

@@ -28,9 +28,9 @@ export const useLoginMutation = () => {
       const role = data.data.role;
 
       if (role !== Role.STUDENT) {
-        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.URL);
+        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.QUICK_FIND.URL);
       } else {
-        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.URL);
+        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.PROFILE.URL);
       }
     },
     onError: (error: unknown) => {

@@ -6,12 +6,14 @@ import { SiteHeader } from "@/core/presentation/components/base/site-header";
 import { SidebarInset, SidebarProvider } from "@/core/presentation/components/base/ui/sidebar";
 import ManInSuit from "@/core/presentation/assets/man-in-suit.jpg";
 import { useAuthStore } from "@/core/store/auth.store";
-import { Outlet } from "react-router-dom";
-import { BookUserIcon, UserCircle2Icon, BookMarkedIcon, ActivitySquare, HouseIcon, CameraIcon, FileTextIcon } from "lucide-react";
+import { Navigate, Outlet } from "react-router-dom";
+import { UserCircle2Icon, CameraIcon, FileTextIcon } from "lucide-react";
 import type { AppSideBar } from "../types/app-sidebar.types";
 import { useMemo } from "react";
+import { ROUTER_CONFIG } from "@/core/config/router.config";
+import { Role } from "@/core/enums/roles.enums";
 
-export default function FacultyLayout() {
+export default function StudentLayout() {
   const user = useAuthStore((state) => state.user);
   const appSideBarConfig: AppSideBar = useMemo(
     () => ({
@@ -20,13 +22,7 @@ export default function FacultyLayout() {
         email: user?.email ?? "",
         avatar: user?.profile_picture ?? ManInSuit,
       },
-      navMain: [
-        { title: "Students", url: "#", icon: <BookUserIcon /> },
-        { title: "Faculty", url: "#", icon: <UserCircle2Icon /> },
-        { title: "Curriculum", url: "#", icon: <BookMarkedIcon /> },
-        { title: "Events", url: "#", icon: <ActivitySquare /> },
-        { title: "Rooms", url: "#", icon: <HouseIcon /> },
-      ],
+      navMain: [{ title: "Profile", url: ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.PROFILE.URL, icon: <UserCircle2Icon /> }],
       navClouds: [
         {
           title: "Capture",
@@ -59,7 +55,13 @@ export default function FacultyLayout() {
       ],
     }),
     [user]
-  ); // Only re-run if user changes
+  );
+
+  if (user) {
+    if (user.role !== Role.STUDENT) {
+      return <Navigate to={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.STUDENTS.BASE} />;
+    }
+  }
 
   return (
     <SidebarProvider
@@ -75,13 +77,7 @@ export default function FacultyLayout() {
         <SiteHeader />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              {/* <p>{user?.role}</p>
-              <SectionCards />
-              <div className="px-4 lg:px-6">
-                <ChartAreaInteractive />
-              </div>
-              <DataTable data={data} /> */}
+            <div className="flex flex-col gap-4">
               <Outlet />
             </div>
           </div>

@@ -28,7 +28,7 @@ class UserFactory extends Factory
         return [
             'email' => fake()->unique()->safeEmail(),
             'password' => Hash::make('password'),
-            'role' => fake()->randomElement([RoleEnum::ADMIN, RoleEnum::CHAIR, RoleEnum::DEAN, RoleEnum::FACULTY]),
+            'role' => fake()->randomElement([RoleEnum::ADMIN, RoleEnum::CHAIR, RoleEnum::DEAN, RoleEnum::FACULTY, RoleEnum::STUDENT]),
             'department_id' => 1,
             'name_prefix' => null,
             'first_name' => fake()->firstName(),

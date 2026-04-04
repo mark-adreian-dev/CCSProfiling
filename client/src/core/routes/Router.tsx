@@ -6,7 +6,13 @@ import { ROUTER_CONFIG } from "../config/router.config";
 import ProtectedRoutes from "./ProtectedRoutes";
 import AuthRoutes from "./AuthRoutes";
 import LoadingSpinner from "../presentation/components/custom/Loader/LoadingSpinner";
-import FacultyPage from "@/features/Faculty/pages/FacultyPage";
+import FacultyPage from "@/features/Admin/Faculty/pages/FacultyPage";
+import StudentsPage from "@/features/Admin/Students/pages/StudentsPage";
+import InterestPage from "@/features/Admin/Interest/pages/InterestPage";
+import StudentLayout from "../presentation/layout/StudentLayout";
+import StudentProfilePage from "@/features/Student/StudentProfile/pages/StudentProfilePage";
+import StudentDetailsPage from "@/features/Admin/Students/pages/StudentDetailsPage";
+import FacultyDetailsPage from "@/features/Admin/Faculty/pages/FacultyDetailsPage";
 
 // Lazy Loaded Layouts and Components
 const AuthLayout = lazy(() => import("@/features/Authentication/layout/AuthLayout"));
@@ -33,10 +39,29 @@ export const Router = () => {
 
         {/* Authenticated Only Routes */}
         <Route element={<ProtectedRoutes />}>
-          <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.BASE} element={<AdminLayout />}>
+          <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.BASE} element={<AdminLayout />}>
             {/* ADMIN SECTION */}
-            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.FACULTY.BASE} element={<FacultyPage />} />
-            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.BASE} element={<FacultyPage />} />
+            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.QUICK_FIND.BASE} element={<>Quick Find</>} />
+            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.FACULTY.BASE}>
+              <Route index element={<FacultyPage />} />
+              <Route
+                path={`${ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.FACULTY.SUB_ROUTES.PROFILE.BASE}/:id`}
+                element={<FacultyDetailsPage />}
+              />
+            </Route>
+            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.STUDENTS.BASE}>
+              <Route index element={<StudentsPage />} />
+              <Route
+                path={`${ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.STUDENTS.SUB_ROUTES.PROFILE.BASE}/:id`}
+                element={<StudentDetailsPage />}
+              />
+            </Route>
+            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.INTEREST.BASE} element={<InterestPage />} />
+          </Route>
+          <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.BASE} element={<StudentLayout />}>
+            {/* Student SECTION */}
+            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.QUICK_FIND.BASE} element={<>Quick Find</>} />
+            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.PROFILE.BASE} element={<StudentProfilePage />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/login" replace />} />
