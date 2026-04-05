@@ -3,7 +3,7 @@
         Options -MultiViews -Indexes
     </IfModule>
 
-    DirectoryIndex index.html index.php
+    DirectoryIndex client/dist/index.html server/public/index.php
     RewriteEngine On
     RewriteBase /
     
