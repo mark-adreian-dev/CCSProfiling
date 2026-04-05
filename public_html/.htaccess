@@ -1,0 +1,42 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    DirectoryIndex index.html index.php
+    RewriteEngine On
+    RewriteBase /
+    
+    # 1. REAL STORAGE ACCESS
+    # We removed the old RewriteRule because the 'storage' folder 
+    # now physically exists inside public_html. Apache will serve 
+    # these files directly via Section 3 below.
+
+    # 2. API & LARAVEL ROUTES
+    # Directs backend requests to the index.php in public_html
+    # Added your new clear-everything and test-write routes here
+    RewriteCond %{REQUEST_URI} ^/(api|sanctum|clear-everything|test-write|link\.php) [NC]
+    RewriteRule ^(.*)$ index.php [L]
+
+    # 3. STATIC FILES & PHYSICAL STORAGE
+    # This is the "magic" line. It checks if the file (like /storage/img.png) 
+    # exists on the disk. If it does, it serves it immediately.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # 4. SECURITY HEADERS
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteCond %{HTTP:X-XSRF-TOKEN} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-TOKEN}]
+
+    # 5. TRAILING SLASHES
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # 6. REACT SPA ROUTING
+    # Everything else (React routes) goes to index.html
+    RewriteRule ^ index.html [L]
+</IfModule>

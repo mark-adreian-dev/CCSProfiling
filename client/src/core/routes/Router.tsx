@@ -13,6 +13,7 @@ import StudentLayout from "../presentation/layout/StudentLayout";
 import StudentProfilePage from "@/features/Student/StudentProfile/pages/StudentProfilePage";
 import StudentDetailsPage from "@/features/Admin/Students/pages/StudentDetailsPage";
 import FacultyDetailsPage from "@/features/Admin/Faculty/pages/FacultyDetailsPage";
+import CurriculumPage from "@/features/Admin/Curriculum/pages/CurriculumPage";
 
 // Lazy Loaded Layouts and Components
 const AuthLayout = lazy(() => import("@/features/Authentication/layout/AuthLayout"));
@@ -39,8 +40,8 @@ export const Router = () => {
 
         {/* Authenticated Only Routes */}
         <Route element={<ProtectedRoutes />}>
+          {/* ADMIN SECTION */}
           <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.BASE} element={<AdminLayout />}>
-            {/* ADMIN SECTION */}
             <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.QUICK_FIND.BASE} element={<>Quick Find</>} />
             <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.FACULTY.BASE}>
               <Route index element={<FacultyPage />} />
@@ -57,9 +58,11 @@ export const Router = () => {
               />
             </Route>
             <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.INTEREST.BASE} element={<InterestPage />} />
+            <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.CURRICULUM.BASE} element={<CurriculumPage />} />
           </Route>
+
+          {/* Student SECTION */}
           <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.BASE} element={<StudentLayout />}>
-            {/* Student SECTION */}
             <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.QUICK_FIND.BASE} element={<>Quick Find</>} />
             <Route path={ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.PROFILE.BASE} element={<StudentProfilePage />} />
           </Route>

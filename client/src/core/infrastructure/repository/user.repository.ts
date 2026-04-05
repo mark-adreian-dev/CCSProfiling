@@ -82,6 +82,8 @@ export class UserRepository implements UserRepositoryInterface {
       payload.append("profile_picture", convertedFile);
     } else if (picValue === null) {
       payload.append("profile_picture", "");
+    } else {
+      payload.append("profile_picture", picValue as string);
     }
 
     // 2. Process other fields
@@ -147,7 +149,6 @@ export class UserRepository implements UserRepositoryInterface {
 
   async editStudent(studentData: StudentRequest, studentId: number): Promise<UserSuccessDTO> {
     const payload = new FormData();
-
     // IMPORTANT: Tell Laravel to treat this POST as a PATCH
     payload.append("_method", "PATCH");
 
@@ -160,6 +161,8 @@ export class UserRepository implements UserRepositoryInterface {
       payload.append("profile_picture", convertedFile);
     } else if (picValue === null) {
       payload.append("profile_picture", "");
+    } else {
+      payload.append("profile_picture", picValue as string);
     }
 
     // 2. Process other fields

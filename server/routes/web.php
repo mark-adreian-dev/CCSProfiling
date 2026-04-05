@@ -2,6 +2,7 @@
 
 use App\Presentation\Controllers\AffiliationController;
 use App\Presentation\Controllers\AuthController;
+use App\Presentation\Controllers\GradeController;
 use App\Presentation\Controllers\InterestController;
 use App\Presentation\Controllers\ProgramController;
 use App\Presentation\Controllers\UserController;
@@ -47,6 +48,11 @@ Route::prefix('api/v1')->group(function () {
         Route::post('affiliations', [AffiliationController::class, 'createAffiliation'])->name('affiliations.store');
         Route::patch('affiliations/{id}', [AffiliationController::class, 'updateAffiliation'])->name('affiliations.update');
         Route::delete('affiliations/{id}', [AffiliationController::class, 'deleteAffiliation'])->name('affiliations.delete');
+    });
+
+    Route::middleware('auth:sanctum')->prefix('grade')->group(function () {
+        Route::get('grades/{id}', [GradeController::class, 'getGrades']);
+        Route::get('curriculum', [GradeController::class, 'getCurriculum']);
     });
 });
 

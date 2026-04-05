@@ -14,7 +14,7 @@ export default function AuthRoutes() {
     if (user) {
       setUser(user);
       if (user.role !== Role.STUDENT) {
-        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.QUICK_FIND.URL);
+        navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.STUDENTS.URL);
       } else {
         navigate(ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.PROFILE.URL);
       }

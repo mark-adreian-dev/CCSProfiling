@@ -28,5 +28,7 @@ export const API_CONFIG = {
     },
 
     AFFILIATION: `/affiliation/affiliations`,
+    GRADE: `/grade/grades`,
+    CURRICULUM: `/grade/curriculum`,
   },
 };

@@ -64,7 +64,7 @@ const theme = {
     underline: "underline",
     code: "bg-muted p-1 rounded",
   },
-  paragraph: "mb-2 text-base leading-relaxed text-primary-foreground/70",
+  paragraph: "mb-2 text-base leading-relaxed text-primary-foreground/70 word-r wrap-break-word",
   heading: {
     h1: "text-3xl font-bold tracking-tight mb-4 mt-2",
     h2: "text-2xl font-semibold tracking-tight mb-3 mt-2",
@@ -407,13 +407,22 @@ export function SetEditorStatePlugin({ value }: { value?: string }) {
     editor.update(() => {
       const currentHtml = $generateHtmlFromNodes(editor);
 
-      // ✅ Prevent unnecessary updates (THIS FIXES CURSOR ISSUE)
       if (currentHtml === value && isInitialized.current) {
         return;
       }
 
+      // 🔥 Normalize value
+      let htmlToParse = value;
+
+      const isHtml = /<\/?[a-z][\s\S]*>/i.test(value);
+
+      if (!isHtml) {
+        // convert plain text → HTML
+        htmlToParse = `<p>${value}</p>`;
+      }
+
       const parser = new DOMParser();
-      const dom = parser.parseFromString(value, "text/html");
+      const dom = parser.parseFromString(htmlToParse, "text/html");
 
       const nodes = $generateNodesFromDOM(editor, dom);
 

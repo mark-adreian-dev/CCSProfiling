@@ -10,6 +10,11 @@ use Database\Seeders\StudentProfilesSeeder;
 use Database\Seeders\FacultyProfilesSeeder;
 use Database\Seeders\InterestsSeeder;
 use Database\Seeders\UserInterestsSeeder;
+use Database\Seeders\AcademicYearsSeeder;
+use Database\Seeders\SemestersSeeder;
+use Database\Seeders\SubjectsSeeder;
+use Database\Seeders\GradingPeriodsSeeder;
+use Database\Seeders\GradesSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,6 +30,12 @@ class DatabaseSeeder extends Seeder
             InterestsSeeder::class,
             UserInterestsSeeder::class,
             AffiliationSeeder::class,
+
+            AcademicYearsSeeder::class,    // Step 1: Create academic years
+            SemestersSeeder::class,        // Step 2: Create semesters
+            SubjectsSeeder::class,         // Step 3: Create subjects per semester
+            GradingPeriodsSeeder::class,   // Step 4: Create grading periods
+            GradesSeeder::class,           // Step 5: Assign grades to students
         ]);
     }
 }

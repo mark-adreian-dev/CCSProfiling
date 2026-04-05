@@ -44,7 +44,15 @@ class UpdateUserValidation extends FormRequest
              * REMOVE 'file' if you are sending Base64 strings via JSON.
              * Keep it as 'nullable' or 'string'.
              */
-            'profile_picture' => ['sometimes', 'nullable', 'file'],
+            'profile_picture' => [
+                'sometimes',
+                'nullable',
+                Rule::when(
+                    request()->hasFile('profile_picture'),
+                    ['file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+                    ['string']
+                ),
+            ],
 
             // Faculty Profile Specific Validation
             'expertise' => [

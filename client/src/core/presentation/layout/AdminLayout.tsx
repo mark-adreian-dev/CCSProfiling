@@ -3,7 +3,7 @@ import { SiteHeader } from "@/core/presentation/components/base/site-header";
 import { SidebarInset, SidebarProvider } from "@/core/presentation/components/base/ui/sidebar";
 import { useAuthStore } from "@/core/store/auth.store";
 import { Navigate, Outlet } from "react-router-dom";
-import { BookUserIcon, UserCircle2Icon, CameraIcon, FileTextIcon, Sprout } from "lucide-react";
+import { BookUserIcon, UserCircle2Icon, CameraIcon, FileTextIcon, Sprout, BookMarked } from "lucide-react";
 import type { AppSideBar } from "../types/app-sidebar.types";
 import { useMemo } from "react";
 import { ROUTER_CONFIG } from "@/core/config/router.config";
@@ -22,6 +22,7 @@ export default function AdminLayout() {
         { title: "Students", url: ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.STUDENTS.URL, icon: <BookUserIcon /> },
         { title: "Faculty", url: ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.FACULTY.URL, icon: <UserCircle2Icon /> },
         { title: "Interests", url: ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.INTEREST.URL, icon: <Sprout /> },
+        { title: "Curriculum", url: ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.ADMIN.CURRICULUM.URL, icon: <BookMarked /> },
       ],
       navClouds: [
         {

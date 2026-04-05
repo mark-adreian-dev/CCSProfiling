@@ -111,7 +111,7 @@ export default function FacultyForm({ targetID, FormTrigger, Icon }: FacultyForm
           <LoadingSpinner message={"Loading"} />
         </div>
       ) : (
-        <div className="flex items-start gap-6 w-full">
+        <div className="flex flex-col items-start gap-6 w-full lg:flex-row">
           <FormImagePicker
             control={form.control}
             name="profile_picture"

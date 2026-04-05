@@ -3,8 +3,10 @@
 namespace App\Infrastructure\Providers;
 
 use App\Domain\Repositories\AffiliationRepositoryInterface;
+use App\Domain\Repositories\GradeRepositoryInterface;
 use App\Domain\Repositories\ProgramRepositoryInterface;
 use App\Infrastructure\Repositories\AffiliationRepository;
+use App\Infrastructure\Repositories\GradeRepository;
 use App\Infrastructure\Repositories\ProgramRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Domain\Repositories\UserRepositoryInterface;
@@ -38,6 +40,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AffiliationRepositoryInterface::class,
             AffiliationRepository::class
+        );
+
+        $this->app->bind(
+            GradeRepositoryInterface::class,
+            GradeRepository::class
         );
     }
 

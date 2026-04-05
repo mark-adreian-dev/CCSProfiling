@@ -1,10 +1,6 @@
 import { AppSidebar } from "@/core/presentation/components/base/app-sidebar";
-// import { ChartAreaInteractive } from "@/core/presentation/components/base/chart-area-interactive";
-// import { DataTable } from "@/core/presentation/components/base/data-table";
-// import { SectionCards } from "@/core/presentation/components/base/section-cards";
 import { SiteHeader } from "@/core/presentation/components/base/site-header";
 import { SidebarInset, SidebarProvider } from "@/core/presentation/components/base/ui/sidebar";
-import ManInSuit from "@/core/presentation/assets/man-in-suit.jpg";
 import { useAuthStore } from "@/core/store/auth.store";
 import { Navigate, Outlet } from "react-router-dom";
 import { UserCircle2Icon, CameraIcon, FileTextIcon } from "lucide-react";
@@ -20,7 +16,7 @@ export default function StudentLayout() {
       user: {
         name: user?.first_name ?? "",
         email: user?.email ?? "",
-        avatar: user?.profile_picture ?? ManInSuit,
+        avatar: user?.profile_picture ?? undefined,
       },
       navMain: [{ title: "Profile", url: ROUTER_CONFIG.PROTECTED.DASHBOARD.ROUTES.STUDENT.PROFILE.URL, icon: <UserCircle2Icon /> }],
       navClouds: [

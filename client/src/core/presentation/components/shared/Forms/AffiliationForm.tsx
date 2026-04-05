@@ -48,8 +48,6 @@ export default function AffiliationForm({ targetID, FormTrigger, Icon }: Affilia
       const startDate = affiliation.date_start ? new Date(affiliation.date_start) : null;
       const endDate = affiliation.date_end ? new Date(affiliation.date_end) : null;
 
-      console.log(affiliationData.data);
-
       form.reset({
         affiliation_name: affiliation.affiliation_name,
         role: affiliation.role ?? undefined,
@@ -77,10 +75,14 @@ export default function AffiliationForm({ targetID, FormTrigger, Icon }: Affilia
 
   const submitHandler = async (value: AffiliationRequest) => {
     if (isEdit && targetID) {
-      await editAffiliation({ affiliation: value, affiliationId: targetID });
+      await editAffiliation({
+        affiliation: value,
+        affiliationId: targetID,
+        userId: user?.id ?? 0,
+      });
       setIsOpen(false);
     } else {
-      await addAffiliation(value);
+      await addAffiliation({ affiliation: value, userId: user?.id ?? 0 });
       setIsOpen(false);
     }
 

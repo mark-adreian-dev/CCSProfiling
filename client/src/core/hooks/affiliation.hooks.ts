@@ -16,19 +16,23 @@ export const useGetAffiliationByIdQuery = (affiliationId?: number) => {
     enabled: !!affiliationId,
   });
 };
-
 export const useAddAffiliationMutation = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: (affiliation: AffiliationRequest) => useCase.createAffiliationData(affiliation),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["affiliation"] });
+    // Wrap parameters in an object to pass both the data and the userId
+    mutationFn: ({ affiliation }: { userId: number; affiliation: AffiliationRequest }) => useCase.createAffiliationData(affiliation),
+
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["affiliation", variables.affiliation] });
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+      queryClient.invalidateQueries({ queryKey: ["faculties", variables.userId] });
+      queryClient.invalidateQueries({ queryKey: ["students", variables.userId] });
+
       toast.success(data.message, {
         id: TOASTER_CONFIG.GLOBAL,
       });
     },
-
     onError: (error: unknown) => {
       handleError(error, TOASTER_CONFIG.GLOBAL);
     },
@@ -39,17 +43,20 @@ export const useEditAffiliationMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ affiliationId, affiliation }: { affiliationId: number; affiliation: AffiliationRequest }) =>
+    mutationFn: ({ affiliationId, affiliation }: { userId: number; affiliationId: number; affiliation: AffiliationRequest }) =>
       useCase.editAffiliationData(affiliation, affiliationId),
+
     onSuccess: (data, variables) => {
+      // Invalidate specific affiliation and the user's affiliation list
       queryClient.invalidateQueries({ queryKey: ["affiliation", variables.affiliationId] });
-      queryClient.invalidateQueries({ queryKey: ["affiliation"] });
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+      queryClient.invalidateQueries({ queryKey: ["faculties", variables.userId] });
+      queryClient.invalidateQueries({ queryKey: ["students", variables.userId] });
+
       toast.success(data.message, {
         id: TOASTER_CONFIG.GLOBAL,
       });
     },
-
     onError: (error: unknown) => {
       handleError(error, TOASTER_CONFIG.GLOBAL);
     },
@@ -58,17 +65,21 @@ export const useEditAffiliationMutation = () => {
 
 export const useDeleteAffiliationMutation = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: (affiliationId: number) => useCase.deleteAffiliationData(affiliationId),
-    onSuccess: (data, affiliationId) => {
-      queryClient.invalidateQueries({ queryKey: ["affiliation", affiliationId] });
-      queryClient.invalidateQueries({ queryKey: ["affiliation"] });
+    mutationFn: ({ affiliationId }: { userId: number; affiliationId: number }) => useCase.deleteAffiliationData(affiliationId),
+
+    onSuccess: (data, variables) => {
+      // Clean up the user-specific cache
+      queryClient.invalidateQueries({ queryKey: ["affiliation", variables.affiliationId] });
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+      queryClient.invalidateQueries({ queryKey: ["faculties", variables.userId] });
+      queryClient.invalidateQueries({ queryKey: ["students", variables.userId] });
+
       toast.success(data.message, {
         id: TOASTER_CONFIG.GLOBAL,
       });
     },
-
     onError: (error: unknown) => {
       handleError(error, TOASTER_CONFIG.GLOBAL);
     },

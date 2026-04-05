@@ -37,6 +37,11 @@ export const ROUTER_CONFIG = {
             URL: "/admin/dashboard/interests",
             SUB_ROUTES: {},
           },
+          CURRICULUM: {
+            BASE: "curriculum",
+            URL: "/admin/dashboard/curriculum",
+            SUB_ROUTES: {},
+          },
         },
         STUDENT: {
           BASE: "student/dashboard",
