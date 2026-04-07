@@ -27,7 +27,6 @@ EXPOSE 10000
 # Start Laravel server, create SQLite file, migrate, seed (all at container start)
 CMD bash -c "\
   touch /app/server/database/ccsprofiling.sqlite && \
-  php artisan key:generate && \
   php artisan migrate --force && \
   php artisan db:seed --force && \
   php artisan serve --host=0.0.0.0 --port=\${PORT:-10000} \
