@@ -1,8 +1,8 @@
 # Use PHP 8.5 CLI image
 FROM php:8.5-cli
 
-# Set working directory inside container to Laravel folder
-WORKDIR /app/server
+# Set working directory inside container to /app
+WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -12,11 +12,14 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy entire repo into container
-COPY . .
+# Copy only the Laravel server folder into /app
+COPY server/ ./server/
 
-# Install Laravel dependencies inside server folder
-RUN composer install --working-dir=/app/server
+# Set working directory to the Laravel folder
+WORKDIR /app/server
+
+# Install Laravel dependencies
+RUN composer install
 
 # Expose port for php artisan serve
 EXPOSE 10000
