@@ -18,11 +18,17 @@ COPY server/ ./
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader
 
-# Run migrations and seeders
-RUN php artisan migrate --force && php artisan db:seed --force
+# Ensure database folder exists (for SQLite)
+RUN mkdir -p /app/server/database
 
 # Expose port
 EXPOSE 10000
 
-# Start Laravel server using PORT env (Render compatible)
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+# Start Laravel server, create SQLite file, migrate, seed (all at container start)
+CMD bash -c "\
+  touch /app/server/database/ccsprofiling.sqlite && \
+  php artisan key:generate && \
+  php artisan migrate --force && \
+  php artisan db:seed --force && \
+  php artisan serve --host=0.0.0.0 --port=\${PORT:-10000} \
+"
