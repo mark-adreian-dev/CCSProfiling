@@ -27,4 +27,4 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Run migrations, seed DB, and start Laravel
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
