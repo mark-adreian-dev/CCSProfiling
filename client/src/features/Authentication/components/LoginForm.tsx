@@ -29,7 +29,7 @@ export function LoginForm() {
   if (isLoggingIn) return <LoadingSpinner message={"Logging in..."} />;
 
   return (
-    <Form form={form} onSubmit={handleSubmit}>
+    <Form form={form} onSubmit={handleSubmit} formID="auth-form">
       <div className="grid gap-10 relative">
         {isLoggingIn && (
           <div className="absolute inset-0 bg-white/50 z-10 flex items-center justify-center">
