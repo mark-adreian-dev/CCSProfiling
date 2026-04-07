@@ -18,9 +18,6 @@ COPY server/ ./
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader
 
-# Create .env if missing and generate key
-RUN if [ ! -f .env ]; then cp .env.example .env && php artisan key:generate; fi
-
 # Run migrations and seeders
 RUN php artisan migrate --force && php artisan db:seed --force
 
