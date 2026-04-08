@@ -26,7 +26,7 @@ COPY server/ ./
 RUN composer install --no-interaction --optimize-autoloader
 
 # Copy frontend build into Laravel public folder
-COPY --from=frontend-builder /app/client/dist ./public/frontend
+COPY --from=frontend-builder /app/client/dist ./public/
 
 # Ensure SQLite database folder exists
 RUN mkdir -p /app/server/database \
