@@ -7,9 +7,10 @@ use App\Presentation\Controllers\InterestController;
 use App\Presentation\Controllers\ProgramController;
 use App\Presentation\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\File;
 
 Route::get('/{any}', function () {
-    return File::get(public_path('frontend/index.html'));
+    return File::get(public_path('index.html'));
 })->where('any', '.*');
 
 Route::prefix('api/v1')->group(function () {
