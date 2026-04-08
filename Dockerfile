@@ -1,10 +1,20 @@
-# Use PHP 8.5 CLI image
+# Stage 1: Build React frontend
+FROM node:20 AS frontend-builder
+
+WORKDIR /app/client
+
+COPY client/package*.json ./
+RUN npm install
+
+COPY client/ ./
+RUN npm run build  # builds into /app/client/dist (or build)
+
+# Stage 2: Build PHP Laravel backend
 FROM php:8.5-cli
 
-# Set working directory
 WORKDIR /app/server
 
-# Install system dependencies
+# Install PHP extensions & dependencies
 RUN apt-get update && apt-get install -y \
     git unzip curl libzip-dev zip mariadb-client \
     && docker-php-ext-install zip pdo pdo_mysql
@@ -12,21 +22,24 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy Laravel app
+# Copy Laravel backend
 COPY server/ ./
 
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader
 
-# Ensure database folder exists (for SQLite)
-RUN mkdir -p /app/server/database
+# Copy frontend build into Laravel public folder
+COPY --from=frontend-builder /app/client/dist ./public/frontend
+
+# Ensure SQLite database folder exists
+RUN mkdir -p /app/server/database \
+    && touch /app/server/database/ccsprofiling.sqlite
 
 # Expose port
 EXPOSE 8000
 
-# Start Laravel server, create SQLite file, migrate, seed (all at container start)
+# Start Laravel
 CMD bash -c "\
-  touch /app/server/database/ccsprofiling.sqlite && \
   php artisan migrate --force && \
   php artisan db:seed --force && \
   php artisan serve --host=0.0.0.0 --port=\${PORT:-8000} \
