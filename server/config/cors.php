@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://127.0.0.1:5173', 'https://ccsprofiling-1.onrender.com'],
+    'allowed_origins' => ['http://127.0.0.1:5173', 'https://ccsprofiling-1.onrender.com', 'https://ccsprofiling-1-lrh0.onrender.com'],
 
     'allowed_origins_patterns' => [],
 
