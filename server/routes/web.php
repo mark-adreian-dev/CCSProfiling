@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\File;
 
 Route::get('/{any}', function () {
     return File::get(public_path('index.html'));
-})->where('any', '.*');
+})->where('any', '^(?!api/v1|sanctum/csrf-cookie).*$');
 
 Route::prefix('api/v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
