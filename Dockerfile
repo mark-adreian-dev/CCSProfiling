@@ -1,5 +1,5 @@
 # Stage 1: Build React frontend
-FROM node:20 AS frontend-builder
+FROM node:22 AS frontend-builder
 
 WORKDIR /app/client
 
@@ -7,7 +7,7 @@ COPY client/package*.json ./
 RUN npm install
 
 COPY client/ ./
-RUN npm run build  # builds into /app/client/dist (or build)
+RUN npm run build  # builds into /app/client/dist
 
 # Stage 2: Build PHP Laravel backend
 FROM php:8.5-cli
