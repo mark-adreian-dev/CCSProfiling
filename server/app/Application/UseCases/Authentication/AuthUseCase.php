@@ -26,9 +26,6 @@ class AuthUseCase
         // Login using Laravel session (cookie-based)
         Auth::loginUsingId($user->id);
 
-        // Regenerate session after login
-        request()->session()->regenerate();
-
         return $user;
     }
 
