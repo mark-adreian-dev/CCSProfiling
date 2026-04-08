@@ -8,6 +8,10 @@ use App\Presentation\Controllers\ProgramController;
 use App\Presentation\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/{any}', function () {
+    return File::get(public_path('frontend/index.html'));
+})->where('any', '.*');
+
 Route::prefix('api/v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 
