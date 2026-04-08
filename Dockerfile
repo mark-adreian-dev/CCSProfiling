@@ -22,12 +22,12 @@ RUN composer install --no-interaction --optimize-autoloader
 RUN mkdir -p /app/server/database
 
 # Expose port
-EXPOSE 10000
+EXPOSE 8000
 
 # Start Laravel server, create SQLite file, migrate, seed (all at container start)
 CMD bash -c "\
   touch /app/server/database/ccsprofiling.sqlite && \
   php artisan migrate --force && \
   php artisan db:seed --force && \
-  php artisan serve --host=0.0.0.0 --port=\${PORT:-10000} \
+  php artisan serve --host=0.0.0.0 --port=\${PORT:-8000} \
 "
