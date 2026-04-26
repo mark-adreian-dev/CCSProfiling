@@ -30,6 +30,6 @@ class UsersSeeder extends Seeder
 
         // 2. Generate 2,000 random accounts
         // This will take a few seconds but is way faster than manual entry
-        User::factory()->count(100)->create();
+        User::factory()->count(500)->create();
     }
 }

@@ -66,6 +66,7 @@ const ProfileImage = ({ user, isStudent }: { user: User; isStudent: boolean }) =
   //Student specific details
   const academicStatus = isStudent ? user.studentProfile?.academic_status : undefined;
   const isSameUser = authUser?.id === user.id;
+  console.log(user.profile_picture);
   return (
     <div>
       <Avatar className="w-50 h-50 absolute -top-15 bg-primary text-white">

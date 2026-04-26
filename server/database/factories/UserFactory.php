@@ -24,7 +24,10 @@ class UserFactory extends Factory
     public function definition(): array
     {
         $dob = fake()->date('Y-m-d', '2005-01-01');
+        static $count = 0;
+        $count++;
 
+        echo "Generating user #{$count}\n";
         return [
             'email' => fake()->unique()->safeEmail(),
             'password' => Hash::make('password'),
