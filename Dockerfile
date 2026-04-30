@@ -32,6 +32,13 @@ COPY --from=frontend-builder /app/client/dist ./public/
 RUN mkdir -p /app/server/database \
     && touch /app/server/database/ccsprofiling.sqlite
 
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd
+
 EXPOSE 8000
 
 # Start Laravel
