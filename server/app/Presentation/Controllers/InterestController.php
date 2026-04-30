@@ -5,6 +5,7 @@ namespace App\Presentation\Controllers;
 use App\Application\DTO\PaginationResponseDTO;
 use App\Application\UseCases\Interest\GetAllInterestService;
 use App\Application\UseCases\Interest\GetInterestService;
+use App\Application\UseCases\Interest\InterestChartDataService;
 use App\Application\UseCases\Interest\StoreInterestService;
 use App\Application\UseCases\Interest\UpdateInterestService;
 use App\Application\UseCases\Interest\DeleteInterestService;
@@ -23,6 +24,9 @@ use App\Presentation\Resources\FailedResource;
 use App\Presentation\Resources\SuccessResource;
 use App\Application\DTO\Interest\InterestResponseDTO;
 use Exception;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Http;
+
 
 class InterestController extends Controller
 {
@@ -193,6 +197,154 @@ class InterestController extends Controller
                 "status" => $e->getCode() ?: 400,
                 "message" => $e->getMessage(),
             ])->response()->setStatusCode($e->getCode() ?: 400);
+        }
+    }
+
+    public function getInterestChartData(InterestChartDataService $service)
+    {
+        try {
+            $data = $service->execute();
+
+            return new SuccessResource([
+                "status" => 200,
+                "message" => "Interest chart data retrieved successfully",
+                "data" => $data
+            ]);
+        } catch (Exception $e) {
+
+            $statusCode = (int) $e->getCode();
+
+            // ensure valid HTTP status
+            if ($statusCode < 100 || $statusCode > 599) {
+                $statusCode = 400;
+            }
+
+            return (new FailedResource([
+                "status" => $statusCode,
+                "message" => $e->getMessage(),
+            ]))->response()->setStatusCode($statusCode);
+        }
+    }
+
+    public function downloadInterestReport(InterestChartDataService $service)
+    {
+        try {
+            // 1. Full dataset (for TABLE)
+            $allData = collect($service->execute())
+                ->sortByDesc('total')
+                ->values();
+
+            // 2. CHART DATA (ONLY TOP 20)
+            $chartData = $allData->take(20);
+
+            // 3. Summary (based on ALL data)
+            $totalStudent = $allData->sum('student');
+            $totalFaculty = $allData->sum('faculty');
+
+            $summary = [
+                'totalStudent' => $totalStudent,
+                'totalFaculty' => $totalFaculty,
+                'topInterest' => $allData->first(),
+            ];
+
+            // 4. Chunk ONLY chart data
+            $chunks = $chartData->chunk(20);
+
+            // 5. GLOBAL CEILING (ONLY FROM CHART DATA)
+            $yAxisMax = $chartData->max(function ($item) {
+                return max($item['student'], $item['faculty']);
+            });
+
+            $yAxisMax = (int) ceil($yAxisMax);
+
+            $chartImages = [];
+
+            foreach ($chunks as $index => $chunk) {
+
+                $chartConfig = [
+                    "type" => "bar",
+                    "data" => [
+                        "labels" => $chunk->pluck('interest_name'),
+                        "datasets" => [
+                            [
+                                "label" => "Student",
+                                "backgroundColor" => "#EAC46A",
+                                "data" => $chunk->pluck('student'),
+                                "stack" => "stack1",
+                            ],
+                            [
+                                "label" => "Faculty",
+                                "backgroundColor" => "#F05A1A",
+                                "data" => $chunk->pluck('faculty'),
+                                "stack" => "stack1",
+                            ],
+                        ],
+                    ],
+                    "options" => [
+                        "responsive" => true,
+
+                        "plugins" => [
+                            "legend" => [
+                                "position" => "top",
+                                "labels" => [
+                                    "font" => ["size" => 10]
+                                ]
+                            ],
+                            "title" => [
+                                "display" => true,
+                                "text" => "Top 20 Interests"
+                            ],
+                        ],
+
+                        "scales" => [
+                            "x" => [
+                                "stacked" => true,
+                                "ticks" => [
+                                    "font" => ["size" => 8],
+                                    "maxRotation" => 45,
+                                    "minRotation" => 45
+                                ]
+                            ],
+                            "y" => [
+                                "stacked" => true,
+                                "beginAtZero" => true,
+                                "max" => $yAxisMax,
+                                "ticks" => [
+                                    "font" => ["size" => 8]
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+
+                $response = Http::post('https://quickchart.io/chart', [
+                    'format' => 'png',
+                    'width' => 1200,
+                    'height' => 600,
+                    'chart' => $chartConfig,
+                ]);
+
+                if (!$response->successful()) {
+                    throw new Exception($response->body());
+                }
+
+                $chartImages[] = 'data:image/png;base64,' . base64_encode($response->body());
+            }
+
+            // 6. PDF (ALL DATA PASSED)
+            $pdf = Pdf::loadView('reports.interest-report', [
+                'data' => $allData,      // ✅ FULL TABLE
+                'summary' => $summary,
+                'chartImages' => $chartImages,
+            ]);
+
+            return $pdf->download('interest-report.pdf');
+
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => 400,
+                "message" => $e->getMessage(),
+            ], 400);
         }
     }
 }

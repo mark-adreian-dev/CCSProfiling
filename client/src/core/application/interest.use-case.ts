@@ -1,5 +1,5 @@
 import type { PaginationParams } from "../utils/types/pagination-params.types";
-import type { InterestSuccessDTO, PaginatedInterestResponseDTO } from "../infrastructure/dto/interest.dto";
+import type { InterestChartDataSuccessDTO, InterestSuccessDTO, PaginatedInterestResponseDTO } from "../infrastructure/dto/interest.dto";
 import type { InterestRepositoryInterface } from "../infrastructure/repository/interface/interest.reposity.interface";
 import type { InterestUseCaseInterface } from "./interface/interest.use-case.interface";
 import type { InterestRequest } from "../domain/schema/interest.schema";
@@ -34,5 +34,13 @@ export class InterestUseCase implements InterestUseCaseInterface {
 
   async removeUserInterest(interestId: number): Promise<InterestSuccessDTO> {
     return this.repository.removeUserInterest(interestId);
+  }
+
+  async getInterestChartData(): Promise<InterestChartDataSuccessDTO> {
+    return this.repository.getInterestChartData();
+  }
+
+  async downloadInterestReport(): Promise<Blob> {
+    return this.repository.downloadInterestReport();
   }
 }

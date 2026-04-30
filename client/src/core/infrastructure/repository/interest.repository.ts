@@ -2,8 +2,10 @@ import { API_CONFIG } from "@/core/config/api.config";
 import api from "@/core/utils/axios/axios-instance";
 import type { PaginationParams } from "@/core/utils/types/pagination-params.types";
 import {
+  InterestChartDataSuccessDTOSchema,
   InterestSuccessDTOSchema,
   PaginatedInterestResponseDTOSchema,
+  type InterestChartDataSuccessDTO,
   type InterestSuccessDTO,
   type PaginatedInterestResponseDTO,
 } from "../dto/interest.dto";
@@ -50,5 +52,18 @@ export class InterestRepository implements InterestRepositoryInterface {
     };
     const { data } = await api.post(`${API_CONFIG.endpoints.INTEREST.REMOVE_USER}`, payload);
     return InterestSuccessDTOSchema.parse(data);
+  }
+
+  async getInterestChartData(): Promise<InterestChartDataSuccessDTO> {
+    const { data } = await api.get(`${API_CONFIG.endpoints.INTEREST.CHART_DATA}`);
+    return InterestChartDataSuccessDTOSchema.parse(data);
+  }
+
+  async downloadInterestReport(): Promise<Blob> {
+    const response = await api.get<Blob>(API_CONFIG.endpoints.INTEREST.REPORT, {
+      responseType: "blob",
+    });
+
+    return response.data;
   }
 }

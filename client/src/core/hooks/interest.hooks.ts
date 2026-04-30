@@ -18,6 +18,13 @@ export const useGetAllInterestQuery = ({ params }: { params: PaginationParams<In
   });
 };
 
+export const useGetInterestChartDataQuery = () => {
+  return useQuery({
+    queryKey: ["interest-chart-data"],
+    queryFn: () => useCase.getInterestChartData(),
+  });
+};
+
 export const useGetInterestByIdQuery = (interestId?: number) => {
   return useQuery({
     queryKey: ["interest", interestId],
@@ -113,6 +120,43 @@ export const useRemoveUserInterestMutation = () => {
     },
 
     onError: (error: unknown) => {
+      handleError(error, TOASTER_CONFIG.GLOBAL);
+    },
+  });
+};
+
+export const useDownloadInterestReportMutation = () => {
+  return useMutation({
+    mutationFn: () => useCase.downloadInterestReport(),
+
+    onMutate: () => {
+      const toastId = toast.loading("Downloading report...");
+      return { toastId };
+    },
+
+    onSuccess: (blob, _, context) => {
+      toast.dismiss(context?.toastId);
+
+      toast.success("Download complete!", {
+        id: TOASTER_CONFIG.GLOBAL,
+      });
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "interest-report.pdf";
+
+      document.body.appendChild(link);
+      link.click();
+
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    },
+
+    onError: (error: unknown, _, context) => {
+      toast.dismiss(context?.toastId);
+
       handleError(error, TOASTER_CONFIG.GLOBAL);
     },
   });

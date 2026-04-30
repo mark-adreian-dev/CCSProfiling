@@ -122,4 +122,35 @@ class InterestRepository implements InterestRepositoryInterface
                 'updated_at' => now(),
             ]);
     }
+
+
+    public function getInterestChartData(): array
+    {
+        $data = DB::table('interests')
+            ->leftJoin('user_interests', function ($join) {
+                $join->on('interests.id', '=', 'user_interests.interest_id')
+                    ->whereNull('user_interests.deleted_at');
+            })
+            ->leftJoin('users', 'users.id', '=', 'user_interests.user_id')
+            ->select(
+                'interests.name as interest_name',
+
+                DB::raw("SUM(CASE WHEN users.role = 'student' THEN 1 ELSE 0 END) as student"),
+                DB::raw("SUM(CASE WHEN users.role = 'faculty' THEN 1 ELSE 0 END) as faculty"),
+                DB::raw("
+                SUM(CASE WHEN users.role = 'student' THEN 1 ELSE 0 END) +
+                SUM(CASE WHEN users.role = 'faculty' THEN 1 ELSE 0 END)
+                as total
+            ")
+            )
+            ->groupBy('interests.name')
+            ->get();
+
+        return $data->map(fn($item) => [
+            "interest_name" => $item->interest_name,
+            "student" => (int) $item->student,
+            "faculty" => (int) $item->faculty,
+            "total" => (int) $item->total,
+        ])->toArray();
+    }
 }

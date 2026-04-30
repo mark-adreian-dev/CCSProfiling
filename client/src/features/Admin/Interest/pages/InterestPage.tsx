@@ -10,6 +10,7 @@ import { useInterestColumns } from "../utils/interests.columns";
 import { useGetAllInterestQuery } from "@/core/hooks/interest.hooks";
 import type { Interest } from "@/core/domain/entity/interest.entity";
 import InterestForm from "../components/InterestForm";
+import { InterestChart } from "../components/InterestChart";
 
 export default function InterestPage() {
   const { column } = useInterestColumns();
@@ -62,6 +63,7 @@ export default function InterestPage() {
         tableSearchControls
         paginationControls
       />
+      <InterestChart />
     </div>
   );
 }

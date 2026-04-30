@@ -1,4 +1,4 @@
-import { InterestSchema } from "@/core/domain/entity/interest.entity";
+import { InterestSchema, InterestChartDataSchema } from "@/core/domain/entity/interest.entity";
 import z from "zod";
 import { PaginatedResponseSchema } from "./paginated-response.dto";
 import { SuccessResponseDTOSchema } from "./success-response.dto";
@@ -22,7 +22,12 @@ export const PaginatedInterestResponseDTOSchema = SuccessResponseDTOSchema.exten
   data: PaginatedInterestSchema,
 });
 
+export const InterestChartDataSuccessDTOSchema = SuccessResponseDTOSchema.extend({
+  data: InterestChartDataSchema,
+});
+
 export type InterestSuccessDTO = z.infer<typeof InterestSuccessDTOSchema>;
 export type InterestErrorDTO = z.infer<typeof InterestErrorDTOSchema>;
 export type PaginatedInterest = z.infer<typeof PaginatedInterestSchema>;
 export type PaginatedInterestResponseDTO = z.infer<typeof PaginatedInterestResponseDTOSchema>;
+export type InterestChartDataSuccessDTO = z.infer<typeof InterestChartDataSuccessDTOSchema>;

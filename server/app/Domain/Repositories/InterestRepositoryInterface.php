@@ -14,4 +14,5 @@ interface InterestRepositoryInterface
     public function deleteInterest(int $id): bool;
     public function addUserInterest(int $interestId): void;
     public function removeUserInterest(int $interestId): void;
+    public function getInterestChartData(): array;
 }

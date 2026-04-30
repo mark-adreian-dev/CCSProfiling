@@ -24,4 +24,3 @@ dist-ssr
 *.sw?
 *.zip
 *.sql
-*.env*

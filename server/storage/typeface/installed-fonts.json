@@ -1,0 +1,14 @@
+{
+    "balthazar": {
+        "normal": "balthazar_normal_4abe5aebf40c2fdc533efdd8d4ca4a65"
+    },
+    "calibri": {
+        "normal": "calibri_normal_6a920be0cdec7418c1e68465d901874d"
+    },
+    "calibribolditalic": {
+        "bold_italic": "calibribolditalic_bold_italic_c227efc5af46952086c5d2e07dc438f9"
+    },
+    "oldenglish": {
+        "normal": "oldenglish_normal_e3ba43ae2b6a6bdd1e2fdd51198256d6"
+    }
+}

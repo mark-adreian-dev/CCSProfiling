@@ -25,6 +25,8 @@ export const API_CONFIG = {
       BASE: `/interest/interests`,
       ADD_USER: `/interest/user-interests/add`,
       REMOVE_USER: `/interest/user-interests/remove`,
+      CHART_DATA: `/interest/interests/chart`,
+      REPORT: `/interest/interests/reports`,
     },
 
     AFFILIATION: `/affiliation/affiliations`,

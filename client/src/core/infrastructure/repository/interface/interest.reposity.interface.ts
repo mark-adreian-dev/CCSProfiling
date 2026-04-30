@@ -1,6 +1,6 @@
 import type { PaginationParams } from "@/core/utils/types/pagination-params.types";
 import type { Interest } from "@/core/domain/entity/interest.entity";
-import type { InterestSuccessDTO, PaginatedInterestResponseDTO } from "../../dto/interest.dto";
+import type { InterestChartDataSuccessDTO, InterestSuccessDTO, PaginatedInterestResponseDTO } from "../../dto/interest.dto";
 import type { InterestRequest } from "@/core/domain/schema/interest.schema";
 
 export interface InterestRepositoryInterface {
@@ -17,4 +17,8 @@ export interface InterestRepositoryInterface {
   addUserInterest(interestId: number): Promise<InterestSuccessDTO>;
 
   removeUserInterest(interestId: number): Promise<InterestSuccessDTO>;
+
+  getInterestChartData(): Promise<InterestChartDataSuccessDTO>;
+
+  downloadInterestReport(): Promise<Blob>;
 }

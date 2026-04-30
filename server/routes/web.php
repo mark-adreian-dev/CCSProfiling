@@ -37,6 +37,8 @@ Route::prefix('api/v1')->group(function () {
     });
 
     Route::middleware('auth:sanctum')->prefix('interest')->group(function () {
+        Route::get('interests/chart', [InterestController::class, 'getInterestChartData']);
+        Route::get('interests/reports', [InterestController::class, 'downloadInterestReport']);
         Route::get('interests', [InterestController::class, 'getAllInterests']);
         Route::post('interests', [InterestController::class, 'createInterest']);
         Route::get('interests/{id}', [InterestController::class, 'getInterestById']);
@@ -45,6 +47,8 @@ Route::prefix('api/v1')->group(function () {
 
         Route::post('user-interests/add', [InterestController::class, 'addUserInterest']);
         Route::post('user-interests/remove', [InterestController::class, 'removeUserInterest']);
+
+
     });
 
     Route::middleware('auth:sanctum')->prefix('affiliation')->group(function () {
