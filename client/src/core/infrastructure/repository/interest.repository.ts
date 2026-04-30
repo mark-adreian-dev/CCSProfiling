@@ -29,12 +29,12 @@ export class InterestRepository implements InterestRepositoryInterface {
   }
 
   async editInterestData(interest: InterestRequest, interestId: number): Promise<InterestSuccessDTO> {
-    const { data } = await api.patch(`${API_CONFIG.endpoints.INTEREST}/${interestId}`, interest);
+    const { data } = await api.patch(`${API_CONFIG.endpoints.INTEREST.BASE}/${interestId}`, interest);
     return InterestSuccessDTOSchema.parse(data);
   }
 
   async deleteInterestData(interestId: number): Promise<InterestSuccessDTO> {
-    const { data } = await api.delete(`${API_CONFIG.endpoints.INTEREST}/${interestId}`);
+    const { data } = await api.delete(`${API_CONFIG.endpoints.INTEREST.BASE}/${interestId}`);
     return InterestSuccessDTOSchema.parse(data);
   }
 
